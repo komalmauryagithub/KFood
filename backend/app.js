@@ -6,6 +6,10 @@ const errorMiddleware = require('./middleware/errorMiddleware');
 // Load environment variables
 dotenv.config();
 
+app.get("/", (req, res) => {
+  res.send("KFOOD API is running 🚀");
+});
+
 // Import routes
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
