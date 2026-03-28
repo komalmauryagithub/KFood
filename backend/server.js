@@ -20,3 +20,7 @@ process.on('unhandledRejection', (err, promise) => {
   // Close server & exit process
   server.close(() => process.exit(1));
 });
+
+app.get("/", (req, res) => {
+  res.send("KFOOD API is running 🚀");
+});
