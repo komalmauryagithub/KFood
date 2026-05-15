@@ -48,14 +48,7 @@ body {
   margin-left: 250px;
 }
 
-.navbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
+
 
 .navbar-logo {
   font-size: 1.8rem;
@@ -69,7 +62,7 @@ body {
 
 .navbar-menu {
   display: flex;
-  gap: 25px;
+  gap: 23px;
   align-items: center;
 }
 
@@ -250,12 +243,12 @@ body {
 /* Popular foods  */
 
 /* ================= CATEGORY HEADER ================= */
-.category-header {
+/* .category-header {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: white;
   padding: 60px 20px;
   text-align: center;
-}
+} */
 
 .category-title {
   font-size: 36px;
@@ -384,7 +377,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1238px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -399,11 +392,7 @@ body {
   color: var(--secondary-color);
 }
 
-.navbar-menu {
-  display: flex;
-  gap: 25px;
-  align-items: center;
-}
+
 
 .navbar-link {
   font-weight: 500;
@@ -603,6 +592,9 @@ body {
   margin-bottom: 30px;
   opacity: 0.9;
 }
+.hero-subtitle p{
+  color: white;
+}
 
 /* Auth Pages */
 .auth-page {
@@ -791,4 +783,9 @@ body {
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
+}
+
+
+.kdrama-image{
+      height: 142px;
 }

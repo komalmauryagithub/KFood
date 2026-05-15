@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
 import { dramaFoods } from '../data/dramaFoods';
 import { useAuth } from '../context/AuthContext';
 import { wishlistAPI, orderAPI } from '../services/api';
@@ -13,9 +14,19 @@ const DramaBites = () => {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Use static data for now (can switch to API later)
-    setFoods(dramaFoods);
-    setLoading(false);
+    const fetchDramaFoods = async () => {
+      try {
+        const response = await api.get('/products?category=Drama Bites');
+        setFoods(response.data.products || []);
+      } catch (error) {
+        console.error('Failed to fetch drama foods:', error);
+        // Fallback to static data
+        setFoods(dramaFoods);
+      }
+      setLoading(false);
+    };
+
+    fetchDramaFoods();
   }, []);
 
   // Handle Add to Wishlist
@@ -28,11 +39,14 @@ const DramaBites = () => {
     try {
       await wishlistAPI.addToWishlist(food._id, {
         _id: food._id,
-        name: food.foodName,
+        name: food.name,
         price: food.price,
         image: food.image,
         description: food.description,
-        category: 'Drama Bites'
+        category: 'Drama Bites',
+        kdramaTitle: food.kdramaTitle,
+        kdramaImageUrl: food.kdramaImageUrl,
+        videoUrl: food.videoUrl
       });
       setMessage('Added to wishlist!');
       setTimeout(() => setMessage(''), 2000);
@@ -80,7 +94,16 @@ const DramaBites = () => {
 
   // Open video modal
   const handleWatchScene = (food) => {
-    setSelectedVideo(food);
+    const videoId = food.videoUrl;
+    if (videoId) {
+      setSelectedVideo({
+        ...food,
+        foodName: food.name || food.foodName,
+        dramaName: food.kdramaTitle || food.dramaName || 'K-Drama Scene',
+        dramaPoster: food.kdramaImageUrl || food.dramaPoster,
+videoUrl: `https://www.youtube.com/embed/${videoId.split('/embed/')[1]?.split('?')[0] || videoId.split('v=')[1]?.split('&')[0] || videoId.split('be/')[1]?.split('?')[0] || videoId.split('youtu.be/')[1]?.split('?')[0] || videoId}?autoplay=1&amp;rel=0&amp;modestbranding=1&amp;playsinline=1`
+      });
+    }
   };
 
   // Close video modal
@@ -155,6 +178,25 @@ const DramaBites = () => {
 
       {/* CSS Styles */}
       <style>{`
+        /* K-Drama Image Overlay */
+        .kdrama-image {
+          position: relative;
+        }
+        .kdrama-name {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          transform: translate(0, 0);
+          background: rgba(0,0,0,0.8);
+          color: white;
+          padding: 8px 16px;
+          border-radius: 20px;
+          font-weight: 700;
+          font-size: 0.95rem;
+          white-space: nowrap;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
         /* Drama Foods Grid */
         .drama-foods-grid {
           display: grid;
@@ -506,22 +548,34 @@ const DramaFoodCard = ({ food, onAddToWishlist, onOrderNow, onWatchScene }) => {
   return (
     <div className="drama-food-card">
       {/* Drama Poster Header */}
-      <div 
-        className="drama-poster-header"
-        style={{ backgroundImage: `url(${food.dramaPoster})` }}
-      >
-        <div className="drama-name-overlay">{food.dramaName}</div>
-      </div>
+        <div 
+className="kdrama-image"
+          style={{ 
+height: '142px',
+            backgroundImage: `url(${food.kdramaImageUrl || food.image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        >
+          <div className="kdrama-name">{food.kdramaTitle || food.name}</div>
+        </div>
 
       {/* Video Section */}
       <div className="video-section">
         <div className="video-container">
-          <iframe
-            src={food.videoUrl}
-            title={food.foodName}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          {food.videoUrl ? (
+            <iframe
+src={`https://www.youtube.com/embed/${food.videoUrl.split('/embed/')[1]?.split('?')[0] || food.videoUrl.split('v=')[1]?.split('&')[0] || food.videoUrl.split('be/')[1]?.split('?')[0] || food.videoUrl.split('youtu.be/')[1]?.split('?')[0] || food.videoUrl}?autoplay=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1`}
+              title={food.name || food.foodName}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+
+          ) : (
+            <div className="no-video-placeholder">
+              No video available
+            </div>
+          )}
         </div>
         <button 
           className="watch-scene-btn"
@@ -543,7 +597,7 @@ const DramaFoodCard = ({ food, onAddToWishlist, onOrderNow, onWatchScene }) => {
             }}
           />
           <div className="drama-food-info">
-            <h3 className="drama-food-name">{food.foodName}</h3>
+        <h3 className="drama-food-name">{food.name || food.foodName}</h3>
             <p className="drama-food-description">{food.description}</p>
             <div className="drama-food-price">${food.price.toFixed(2)}</div>
           </div>
@@ -553,12 +607,6 @@ const DramaFoodCard = ({ food, onAddToWishlist, onOrderNow, onWatchScene }) => {
         <div className="quantity-selector">
           <label>Quantity:</label>
           <div className="quantity-controls">
-            <button 
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="qty-btn"
-            >
-              -
-            </button>
             <span className="qty-value">{quantity}</span>
             <button 
               onClick={() => setQuantity(quantity + 1)}
@@ -566,21 +614,27 @@ const DramaFoodCard = ({ food, onAddToWishlist, onOrderNow, onWatchScene }) => {
             >
               +
             </button>
+            <button 
+              onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              className="qty-btn"
+            >
+              −
+            </button>
           </div>
         </div>
         
         <div className="drama-food-actions">
           <button 
-            className="btn btn-outline wishlist-btn"
-            onClick={() => onAddToWishlist(food)}
-          >
-            ♡ Wishlist
-          </button>
-          <button 
             className="btn btn-primary order-btn"
             onClick={() => onOrderNow(food, quantity)}
           >
             Order Now
+          </button>
+          <button 
+            className="btn btn-outline wishlist-btn"
+            onClick={() => onAddToWishlist(food)}
+          >
+            ♡ Wishlist
           </button>
         </div>
       </div>

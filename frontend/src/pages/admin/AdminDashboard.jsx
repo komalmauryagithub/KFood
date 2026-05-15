@@ -10,6 +10,12 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchDashboard();
+    
+    const interval = setInterval(() => {
+      fetchDashboard();
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchDashboard = async () => {
@@ -23,11 +29,18 @@ const AdminDashboard = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading dashboard...</div>;
+  if (loading) return <div className="loading">Loading dashboard... (Auto-refreshing)</div>;
+
+  const handleManualRefresh = () => {
+    fetchDashboard();
+  };
 
   return (
     <div className="admin-dashboard">
-      <h1>Dashboard Overview</h1>
+      <div className="page-header">
+        <h1>Dashboard Overview</h1>
+        <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>
+      </div>
       <div className="stats-grid">
         <div className="stat-card">
           <h3>Total Users</h3>

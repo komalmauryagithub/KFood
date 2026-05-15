@@ -3,6 +3,7 @@ const Product = require('../models/Product');
 const Order = require('../models/Order');
 const Wishlist = require('../models/Wishlist');
 const Contact = require('../models/Contact');
+const FavoriteFood = require('../models/FavoriteFood');
 
 // @desc    Admin Dashboard stats
 // @route   GET /api/admin/dashboard
@@ -48,6 +49,55 @@ exports.getDashboardStats = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// @desc    Get all favorite foods (for Idol Meals filter)
+exports.getFavoriteFoods = async (req, res) => {
+  try {
+    const favoriteFoods = await FavoriteFood.find({})
+      .populate('idol', 'name groupName image')
+      .sort({ createdAt: -1 })
+      .lean();
+    res.json({ foods: favoriteFoods });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Delete favorite food
+exports.deleteFavoriteFood = async (req, res) => {
+  try {
+    const food = await FavoriteFood.findById(req.params.id);
+    if (!food) {
+      return res.status(404).json({ message: 'Food not found' });
+    }
+    await food.deleteOne();
+    res.json({ message: 'Favorite food deleted' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Update favorite food
+exports.updateFavoriteFood = async (req, res) => {
+  try {
+    const food = await FavoriteFood.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    ).populate('idol', 'name groupName image');
+    if (!food) {
+      return res.status(404).json({ message: 'Food not found' });
+    }
+    res.json(food);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// ... rest of existing functions unchanged
 
 // @desc    Get all users with order count
 // @route   GET /api/admin/users

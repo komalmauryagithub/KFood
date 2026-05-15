@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { wishlistAPI, orderAPI } from '../services/api';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { wishlistAPI, orderAPI } from "../services/api";
 
 const Wishlist = () => {
-  const [wishlist, setWishlist] = useState(null);
+  const [wishlist, setWishlist] = useState({ products: [] });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchWishlist();
@@ -14,11 +14,11 @@ const Wishlist = () => {
   const fetchWishlist = async () => {
     try {
       setLoading(true);
-      const response = await wishlistAPI.getWishlist();
-      setWishlist(response.data);
-    } catch (error) {
-      setError('Failed to load wishlist');
-      console.error('Error fetching wishlist:', error);
+      const res = await wishlistAPI.getWishlist();
+      setWishlist(res?.data || { products: [] });
+    } catch (err) {
+      setError("Failed to load wishlist");
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -26,135 +26,121 @@ const Wishlist = () => {
 
   const handleRemoveFromWishlist = async (productId) => {
     try {
-      const response = await wishlistAPI.removeFromWishlist(productId);
-      setWishlist(response.data);
-    } catch (error) {
-      console.error('Error removing from wishlist:', error);
+      const res = await wishlistAPI.removeFromWishlist(productId);
+      setWishlist(res?.data || { products: [] });
+    } catch (err) {
+      console.error("Remove error:", err);
     }
   };
 
   const handleOrderNow = async (item) => {
-    // Get the product data - could be from product or staticData
     const product = item.product || item.staticData;
-    
+
     if (!product) {
-      alert('Product data not found');
+      alert("Product not found");
       return;
     }
-    
+
     try {
       const orderItem = {
         name: product.name,
-        price: product.price,
+        price: Number(product.price || 0),
         image: product.image,
-        quantity: 1
+        quantity: 1,
       };
-      
-      // Add product reference if it's a MongoDB product
-      if (item.product && item.product._id) {
+
+      if (item.product?._id) {
         orderItem.product = item.product._id;
       }
-      
+
       await orderAPI.createOrder({
         orderItems: [orderItem],
-        shippingAddress: {},
-        paymentMethod: 'cod'
+        shippingAddress: {
+          address: "Default",
+          city: "Mumbai",
+          postalCode: "400001",
+          country: "India",
+        },
+        paymentMethod: "cod",
       });
-      alert('Order placed successfully!');
-      // Optionally remove from wishlist after ordering
-      const itemId = item.product ? item.product._id : item.staticData?._id;
-      if (itemId) {
-        handleRemoveFromWishlist(itemId);
+
+      alert("Order placed!");
+
+      // ✅ remove after order
+      if (item.product?._id) {
+        handleRemoveFromWishlist(item.product._id);
       }
-    } catch (error) {
-      console.error('Error ordering:', error);
-      alert('Failed to place order');
+    } catch (err) {
+      console.error(err);
+      alert("Order failed");
     }
   };
 
-  // Helper function to get product data from item
-  const getProductData = (item) => {
-    if (item.product) {
-      return item.product;
-    }
-    if (item.staticData) {
-      return item.staticData;
-    }
+  // ✅ safer product getter
+  const getProduct = (item) => {
+    // Handle both populated MongoDB products and static data (idol foods)
+    if (item.product && item.product.name) return item.product;
+    if (item.staticData) return item.staticData;
+    if (item.product) return { name: 'Item', image: 'https://via.placeholder.com/300', price: 0, _id: item.product };
     return null;
   };
 
-  // Helper function to get unique ID for item
-  const getItemId = (item) => {
-    if (item.product && item.product._id) {
-      return item.product._id.toString();
-    }
-    if (item.staticData && item.staticData._id) {
-      return item.staticData._id;
-    }
-    return Math.random().toString(36).substr(2, 9);
-  };
-
   if (loading) {
-    return (
-      <div className="wishlist-page">
-        <h1 className="page-title">My Wishlist</h1>
-        <div className="loading">
-          <div className="spinner"></div>
-        </div>
-      </div>
-    );
+    return <p style={{ textAlign: "center" }}>Loading...</p>;
   }
 
   return (
     <div className="wishlist-page">
-      <h1 className="page-title">My Wishlist</h1>
+      
+        <h1  className="page-title">My Wishlist</h1>
+   
+    
 
-      {error && <div className="error-message">{error}</div>}
+      {error && <p className="error-message">{error}</p>}
 
-      {!wishlist || !wishlist.products || wishlist.products.length === 0 ? (
+      {wishlist.products.length === 0 ? (
         <div className="wishlist-empty">
           <h2>Your wishlist is empty</h2>
-          <p>Start adding your favorite Korean dishes!</p>
-          <Link to="/popular-foods" className="btn btn-primary" style={{ marginTop: '20px' }}>
-            Browse Products
+          <Link to="/popular-foods" className="btn btn-primary">
+            Browse Foods
           </Link>
         </div>
       ) : (
         <div className="products-grid">
           {wishlist.products.map((item) => {
-            const product = getProductData(item);
-            const itemId = getItemId(item);
-            
-            if (!product) {
-              return null;
-            }
-            
+            const product = getProduct(item);
+            if (!product) return null;
+
             return (
-              <div key={itemId} className="product-card">
-                <img 
-                  src={product.image} 
-                  alt={product.name || 'Product'} 
+              <div key={product._id} className="product-card">
+                <img
+                  src={product.image}
+                  alt={product.name}
                   className="product-image"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
-                  }}
+                  onError={(e) =>
+                    (e.target.src = "https://via.placeholder.com/400x300")
+                  }
                 />
+
                 <div className="product-info">
-                  <div className="product-category">{product.category || 'Food'}</div>
-                  <h3 className="product-name">{product.name || 'Unknown Product'}</h3>
-                  <p className="product-description">{product.description || ''}</p>
-                  <div className="product-price">${(product.price || 0).toFixed(2)}</div>
+                  <h3>{product.name}</h3>
+                  <p>{product.description}</p>
+
+                  <div className="product-price">
+                    ₹{Number(product.price || 0).toFixed(2)}
+                  </div>
+
                   <div className="product-actions">
-                    <button 
-                      className="btn btn-primary" 
+                    <button
+                      className="btn btn-primary"
                       onClick={() => handleOrderNow(item)}
-                      style={{ marginRight: '10px' }}
                     >
                       Order Now
                     </button>
-                    <button 
-                      className="btn btn-outline" 
-                      onClick={() => handleRemoveFromWishlist(itemId)}
+
+                    <button
+                      className="btn btn-outline"
+                      onClick={() => handleRemoveFromWishlist(product._id || item._id)}
                     >
                       Remove
                     </button>

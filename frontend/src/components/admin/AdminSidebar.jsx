@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LogOut, LayoutDashboard, Package, Users, Heart, Mail, BarChart3 } from 'lucide-react';
+import { LogOut, LayoutDashboard, Package, Users, Heart, Mail, BarChart3, Star } from 'lucide-react';
 import '../../styles/admin/Sidebar.css';
 import '../../styles/admin/Buttons.css';
 
@@ -15,12 +15,13 @@ const AdminSidebar = ({ isOpen }) => {
 
   const menuItems = [
     { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/admin/foods', icon: Package, label: 'Food Management' },
+    { to: '/admin/foods', icon: Package, label: 'Foods' },
+    { to: '/admin/idols', icon: Star, label: 'Idol Meals' },
     { to: '/admin/orders', icon: Package, label: 'Orders' },
     { to: '/admin/users', icon: Users, label: 'Users' },
     { to: '/admin/wishlist', icon: Heart, label: 'Wishlist Monitor' },
     { to: '/admin/contacts', icon: Mail, label: 'Contacts' },
-    { to: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
+
   ];
 
   return (

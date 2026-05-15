@@ -7,6 +7,12 @@ const AdminAnalytics = () => {
 
   useEffect(() => {
     fetchAnalytics();
+    
+    const interval = setInterval(() => {
+      fetchAnalytics();
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchAnalytics = async () => {
@@ -20,11 +26,19 @@ const AdminAnalytics = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading analytics...</div>;
+  if (loading) return <div className="loading">Loading analytics... (Auto-refreshing)</div>;
+
+  const handleManualRefresh = () => {
+    fetchAnalytics();
+
+  };
 
   return (
     <div className="admin-analytics">
-      <h1>Analytics</h1>
+      <div className="page-header">
+        <h1>Analytics</h1>
+        <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>
+      </div>
 
       <div className="stats-grid">
         <div className="stat-card">

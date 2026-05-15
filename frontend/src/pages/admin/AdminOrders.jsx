@@ -8,6 +8,12 @@ const AdminOrders = () => {
 
   useEffect(() => {
     fetchOrders();
+    
+    const interval = setInterval(() => {
+      fetchOrders();
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchOrders = async () => {
@@ -35,11 +41,18 @@ const AdminOrders = () => {
 
   const statusOptions = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
 
-  if (loading) return <div className="loading">Loading orders...</div>;
+  if (loading) return <div className="loading">Loading orders... (Auto-refreshing)</div>;
+
+  const handleManualRefresh = () => {
+    fetchOrders();
+  };
 
   return (
     <div className="admin-orders">
-      <h1>Order Management</h1>
+      <div className="page-header">
+        <h1>Order Management</h1>
+        <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>
+      </div>
       <div className="table-container">
         <table>
           <thead>

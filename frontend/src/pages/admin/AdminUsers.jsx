@@ -7,6 +7,12 @@ const AdminUsers = () => {
 
   useEffect(() => {
     fetchUsers();
+    
+    const interval = setInterval(() => {
+      fetchUsers();
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchUsers = async () => {
@@ -20,11 +26,18 @@ const AdminUsers = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading users...</div>;
+  if (loading) return <div className="loading">Loading users... (Auto-refreshing)</div>;
+
+  const handleManualRefresh = () => {
+    fetchUsers();
+  };
 
   return (
     <div className="admin-users">
-      <h1>User Management</h1>
+      <div className="page-header">
+        <h1>User Management</h1>
+        <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>
+      </div>
       <div className="table-container">
         <table>
           <thead>

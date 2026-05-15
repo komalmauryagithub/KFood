@@ -21,7 +21,9 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminWishlist from "./pages/admin/AdminWishlist";
 import AdminContacts from "./pages/admin/AdminContacts";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminIdols from "./pages/admin/AdminIdols";
 import AdminLogin from "./pages/AdminLogin";
+import AdminIdolsFoods from "./pages/admin/AdminIdolsFoods";
 
 function App() {
   return (
@@ -69,6 +71,8 @@ function App() {
             <Route path="wishlist" element={<AdminWishlist />} />
             <Route path="contacts" element={<AdminContacts />} />
             <Route path="analytics" element={<AdminAnalytics />} />
+            <Route path="idols" element={<AdminIdols />} />
+            <Route path="foods/idols" element={<AdminIdolsFoods />} />
           </Route>
         </Routes>
       </main>

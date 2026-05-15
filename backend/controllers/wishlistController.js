@@ -100,14 +100,10 @@ exports.addToWishlist = async (req, res) => {
       // Add product to wishlist
       if (isStaticData) {
         wishlist.products.push({ staticData });
-      } else {
-        // Verify MongoDB product exists
-        const product = await Product.findById(productId);
-        if (!product) {
-          return res.status(404).json({ message: 'Product not found' });
+        } else {
+          // For idol favorite foods, allow without Product validation
+          wishlist.products.push({ product: productId });
         }
-        wishlist.products.push({ product: productId });
-      }
       
       await wishlist.save();
     }

@@ -75,6 +75,19 @@
   font-size: 0.75rem;
 }
 
+.filter-btn {
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  margin-right: 0.5rem;
+}
+
+.filter-btn.active {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
 .btn-icon-only {
   padding: 0.5rem;
   width: 40px;
@@ -101,4 +114,50 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* 🔥 Base button (NO COLOR HERE) */
+button {
+  padding: 8px 14px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+/* 🔵 Default (agar class nahi di) */
+.btn-primary {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #4338ca;
+}
+
+/* ✏️ EDIT */
+.btn-edit {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+/* 🔴 ADD */
+.btn-add {
+  background: var(--danger);
+  color: white;
+}
+
+/* 🔴 DELETE */
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+
+/* hover */
+.btn-add:hover,
+.btn-danger:hover {
+  opacity: 0.9;
 }

@@ -1,54 +1,89 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+
 const errorMiddleware = require('./middleware/errorMiddleware');
 
-// Load environment variables
+// ✅ Load environment variables
 dotenv.config();
-
-app.get("/", (req, res) => {
-  res.send("KFOOD API is running 🚀");
-});
-
-// Import routes
-const authRoutes = require('./routes/authRoutes');
-const productRoutes = require('./routes/productRoutes');
-const orderRoutes = require('./routes/orderRoutes');
-const wishlistRoutes = require('./routes/wishlistRoutes');
-const contactRoutes = require('./routes/contactRoutes');
-const dramaRoutes = require('./routes/dramaRoutes');
-const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-// Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials: true
-}));
-app.use(express.json());
+// ✅ Trust proxy (important for Render/Railway/Vercel)
+app.set('trust proxy', 1);
+
+// ✅ Security middleware
+app.use(helmet());
+
+// ✅ Logger
+app.use(morgan('dev'));
+
+// ✅ Rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 mins
+  max: 100, // max requests per IP
+  message: {
+    success: false,
+    message: 'Too many requests, please try again later.'
+  }
+});
+
+app.use(limiter);
+
+// ✅ Allowed frontend origins
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL
+];
+
+// ✅ CORS setup
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (Postman/mobile apps)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true
+  })
+);
+
+// ✅ Body parser
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/wishlist', wishlistRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/drama-foods', dramaRoutes);
-app.use('/api/admin', adminRoutes);
-
-// Health check endpoint
+// ✅ Health check route
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'KFOOD API is running' });
+  res.status(200).json({
+    success: true,
+    message: 'KFOOD API is running 🚀'
+  });
 });
 
-// Error middleware
+// ✅ API Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/orders', require('./routes/orderRoutes'));
+app.use('/api/wishlist', require('./routes/wishlistRoutes'));
+app.use('/api/contact', require('./routes/contactRoutes'));
+app.use('/api/drama-foods', require('./routes/dramaRoutes'));
+app.use('/api/idols', require('./routes/idolRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+
+// ✅ 404 handler
+app.use((req, res, next) => {
+  const error = new Error(`Route not found - ${req.originalUrl}`);
+  error.statusCode = 404;
+  next(error);
+});
+
+// ✅ Global error handler
 app.use(errorMiddleware);
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
 
 module.exports = app;

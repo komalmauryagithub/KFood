@@ -1,10 +1,17 @@
-import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/admin/')) {
+      sessionStorage.setItem('lastAdminPath', location.pathname);
+    }
+  }, [location.pathname]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -86,9 +93,9 @@ const Navbar = () => {
 {isAuthenticated ? (
               <>
                 <span className="navbar-user-name">Hi, {user?.name} ({user?.role})</span>
-                {user?.role === 'admin' && (
+{user?.role === 'admin' && (
                   <NavLink 
-                    to="/admin" 
+                    to={sessionStorage.getItem('lastAdminPath') || '/admin'}
                     className="btn btn-admin"
                     onClick={() => setIsMenuOpen(false)}
                   >

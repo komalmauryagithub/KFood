@@ -77,7 +77,7 @@ const AdminLogin = () => {
         </p>
       </div>
       
-      <style jsx>{`
+      <style>{`
         .admin-login {
           min-height: 100vh;
           display: flex;

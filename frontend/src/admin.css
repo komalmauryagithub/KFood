@@ -296,133 +296,146 @@
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1);
 }
-
-.modal {
+/* 🔲 Overlay (background) */
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.5);
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 50;
-}
-
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: var(--shadow-lg);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid var(--gray-200);
-  padding-bottom: 1rem;
+
+  z-index: 999;
 }
 
-.modal-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--gray-900);
+/* 📦 Modal box */
+.modal {
+  background: #fff;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+
+  padding: 20px;
+  border-radius: 12px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+  position: relative;
 }
 
-.modal-close {
+/* ❌ Close button */
+.modal button:first-child {
+
+  width: 35%;
+
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 18px;
   cursor: pointer;
-  color: var(--gray-500);
+
+  /* color: #555; */
 }
 
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
+.modal button:first-child:hover {
+  color: white !important;
 }
 
-.loading::after {
-  content: '';
-  width: 40px;
-  height: 40px;
-  border: 4px solid var(--gray-200);
-  border-top: 4px solid var(--primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.modal button:first-child:hover {
+  color: red;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* 🧑 Idol title */
+.modal h2 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-@media (max-width: 768px) {
-  .admin-sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s;
-  }
-  
-  .admin-sidebar.open {
-    transform: translateX(0);
-  }
-  
-  .admin-main {
-    margin-left: 0;
-    padding: 1rem;
-  }
-  
-  .admin-stats-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .admin-table {
-    font-size: 0.875rem;
-  }
-  
-  .admin-table th, .admin-table td {
-    padding: 0.75rem 0.5rem;
+/* 🍱 Food card */
+.modal > div > div {
+  border: 1px solid #eee;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+
+  background: #fafafa;
+}
+
+/* 🍔 Food name */
+.modal h4 {
+  margin-bottom: 5px;
+}
+
+/* 📄 Description */
+.modal p {
+  font-size: 14px;
+  /* color: #555; */
+  margin-bottom: 10px;
+}
+
+/* ➕➖ Quantity controls */
+.modal button {
+  margin: 4px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Quantity buttons */
+.modal button:nth-child(3),
+.modal button:nth-child(5) {
+  background: #ddd;
+}
+
+.modal button:nth-child(3):hover,
+.modal button:nth-child(5):hover {
+  background: #ccc;
+}
+
+/* ❤️ Wishlist */
+.modal button:nth-last-child(2) {
+  background: #ff4081;
+  color: white;
+}
+
+.modal button:nth-last-child(2):hover {
+  background: #e73370;
+}
+
+/* 🛒 Order */
+.modal button:last-child {
+  background: #007bff;
+  color: white;
+}
+
+.modal button:last-child:hover {
+  background: #0056b3;
+}
+
+/* 📱 Responsive */
+@media (max-width: 500px) {
+  .modal {
+    width: 95%;
+    padding: 15px;
   }
 }
 
-/* Responsive table */
-.admin-table {
-  overflow-x: auto;
-  display: block;
-  white-space: nowrap;
-}
-
-@media (max-width: 640px) {
-  .admin-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
+/* ✨ Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
   }
-  
-  .stat-card {
-    padding: 1rem;
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .stat-number {
-    font-size: 1.75rem;
-  }
-}
-
-.form-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 0.5rem center;
-  background-repeat: no-repeat;
-  background-size: 1.5em 1.5em;
-  padding-right: 2.5rem;
 }

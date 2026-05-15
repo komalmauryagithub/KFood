@@ -7,6 +7,12 @@ const AdminWishlist = () => {
 
   useEffect(() => {
     fetchWishlist();
+    
+    const interval = setInterval(() => {
+      fetchWishlist();
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchWishlist = async () => {
@@ -20,11 +26,18 @@ const AdminWishlist = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading wishlist...</div>;
+  if (loading) return <div className="loading">Loading wishlist... (Auto-refreshing)</div>;
+
+  const handleManualRefresh = () => {
+    fetchWishlist();
+  };
 
   return (
     <div className="admin-wishlist">
-      <h1>Wishlist Monitoring</h1>
+      <div className="page-header">
+        <h1>Wishlist Monitoring</h1>
+        <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>
+      </div>
 
       <div className="dashboard-section">
         <h2>Most Liked Foods</h2>

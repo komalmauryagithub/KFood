@@ -26,18 +26,14 @@ const ProductCard = ({ product }) => {
       const isValidObjectId = /^[0-9a-fA-F]{24}$/.test(product._id);
       
       // For static data items, pass the full object as staticData
-      if (!isValidObjectId) {
-        await wishlistAPI.addToWishlist(product._id, {
-          _id: product._id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          description: product.description,
-          category: product.category
-        });
-      } else {
-        await wishlistAPI.addToWishlist(product._id);
-      }
+      await wishlistAPI.addToWishlist(product._id, {
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        description: product.description,
+        category: product.category || 'Idol Food'
+      });
       
       setMessage('Added to wishlist!');
       setTimeout(() => setMessage(''), 2000);
@@ -116,13 +112,6 @@ const ProductCard = ({ product }) => {
         <div className="quantity-selector">
           <label>Quantity:</label>
           <div className="quantity-controls">
-            <button 
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="qty-btn"
-              disabled={isOrdering}
-            >
-              -
-            </button>
             <span className="qty-value">{quantity}</span>
             <button 
               onClick={() => setQuantity(quantity + 1)}
@@ -131,25 +120,34 @@ const ProductCard = ({ product }) => {
             >
               +
             </button>
+            <button 
+              onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              className="qty-btn"
+              disabled={isOrdering}
+            >
+              −
+            </button>
           </div>
         </div>
         
         {message && <div className="success-message" style={{ marginBottom: '10px' }}>{message}</div>}
         
-        <div className="product-actions">
+        <div className="product-actions" style={{gap: '4px'}}>
           <button 
-            className="btn btn-outline" 
-            onClick={handleAddToWishlist}
-            disabled={isAddingToWishlist}
-          >
-            {isAddingToWishlist ? 'Adding...' : '♡ Wishlist'}
-          </button>
-          <button 
-            className="btn btn-primary" 
+            className="btn btn-primary order-btn" 
+            style={{flex: '1'}}
             onClick={handleOrderNow}
             disabled={isOrdering}
           >
-            {isOrdering ? 'Ordering...' : 'Order Now'}
+            Order Now
+          </button>
+          <button 
+            className="btn btn-outline wishlist-btn" 
+            style={{flex: '1'}}
+            onClick={handleAddToWishlist}
+            disabled={isAddingToWishlist}
+          >
+            ♡ Wishlist
           </button>
         </div>
       </div>

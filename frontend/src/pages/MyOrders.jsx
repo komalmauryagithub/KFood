@@ -83,9 +83,14 @@ const MyOrders = () => {
   };
 
   if (loading) {
-    return (
-      <div className="orders-page">
-        <h1 className="page-title">My Orders</h1>
+  return (
+    <div className="orders-page">
+      <div className="category-header">
+        <div className="container">
+          <h1 className="category-title">My Orders</h1>
+          <p className="category-description">Track your KFOOD deliveries</p>
+        </div>
+      </div>
         <div className="loading">
           <div className="spinner"></div>
         </div>

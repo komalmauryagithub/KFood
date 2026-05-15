@@ -33,6 +33,18 @@ const productSchema = new mongoose.Schema({
     min: [0, 'Stock cannot be negative'],
     default: 0
   },
+  kdramaTitle: {
+    type: String,
+    default: ''
+  },
+  kdramaImageUrl: {
+    type: String,
+    default: ''
+  },
+  videoUrl: {
+    type: String,
+    default: ''
+  },
 
   createdAt: {
     type: Date,

@@ -1,37 +1,38 @@
 const express = require('express');
 const router = express.Router();
-const { 
-  getProducts, 
-  getProductById, 
-  createProduct, 
-  updateProduct, 
+
+const {
+  getProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
   deleteProduct,
-  seedProducts 
+  seedProducts
 } = require('../controllers/productController');
+
 const { protect, admin } = require('../middleware/authMiddleware');
 
-// @route   GET /api/products
-// @access  Public
+// ✅ GET all products
+// /api/products
 router.get('/', getProducts);
 
-// @route   POST /api/products/seed
-// @access  Public
-router.post('/seed', seedProducts);
+// ✅ SEED (better keep it protected to avoid duplicates)
+router.post('/seed', protect, admin, seedProducts);
 
-// @route   GET /api/products/:id
-// @access  Public
+// ✅ GET single product
+// /api/products/:id
 router.get('/:id', getProductById);
 
-// @route   POST /api/products
-// @access  Private/Admin
+// ✅ CREATE product
+// /api/products
 router.post('/', protect, admin, createProduct);
 
-// @route   PUT /api/products/:id
-// @access  Private/Admin
+// ✅ UPDATE product
+// /api/products/:id
 router.put('/:id', protect, admin, updateProduct);
 
-// @route   DELETE /api/products/:id
-// @access  Private/Admin
+// ✅ DELETE product
+// /api/products/:id
 router.delete('/:id', protect, admin, deleteProduct);
 
 module.exports = router;

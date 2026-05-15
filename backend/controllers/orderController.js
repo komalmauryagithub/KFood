@@ -17,8 +17,11 @@ exports.createOrder = async (req, res) => {
     const processedItems = await Promise.all(orderItems.map(async (item) => {
       const quantity = item.quantity || item.qty || 1;
       const price = Number(item.price);
+      const name = item.name || 'Unnamed Item';
       const itemTotal = price * quantity;
       totalAmount += itemTotal;
+
+      console.log('Processing item:', { name, price, quantity }); // Debug
 
       // If there's a product ID, try to fetch the product from DB
       let productRef = null;
@@ -34,7 +37,7 @@ exports.createOrder = async (req, res) => {
       }
 
       return {
-        name: item.name,
+        name,
         quantity: quantity,
         price: price,
         image: item.image,
