@@ -3,7 +3,7 @@ export const idols = [
     id: 1,
     name: 'Jungkook',
     group: 'BTS',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI8UwNzPIwVqvBvYGuvphwlIMMr6CQue38GQ&s',
+    image: 'https://img.etimg.com/thumb/width-1200,height-1200,imgsize-16724,resizemode-75,msid-126405938/magazines/panache/ahead-of-bts-2026-comeback-album-how-does-jungkook-stay-fit-check-his-diet-routine.jpg',
     favoriteFoods: [
       {
         _id: 'idol-1-1',
@@ -131,7 +131,7 @@ export const idols = [
     id: 5,
     name: 'V',
     group: 'BTS',
-    image: 'https://i.pinimg.com/originals/24/9c/08/249c08fdbe66d8e5dd28e28b01c42518.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/220624_%EB%B0%A9%ED%83%84%EC%86%8C%EB%85%84%EB%8B%A8_%EB%B7%94%281%29.jpg/250px-220624_%EB%B0%A9%ED%83%84%EC%86%8C%EB%85%84%EB%8B%A8_%EB%B7%94%281%29.jpg',
     favoriteFoods: [
       {
         _id: 'idol-5-1',

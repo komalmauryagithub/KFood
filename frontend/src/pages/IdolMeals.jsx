@@ -93,19 +93,28 @@ const IdolMeals = () => {
 
 
   return (
-    <div>
+    <div className="kfood-themed-page idol-meals-page">
       {/* HEADER */}
-      <div className="category-header">
-        <h1>Idol Meals</h1>
-        <p>Explore idols & their favorite foods</p>
+      <div className="category-header idol-hero">
+        <div className="container">
+          <p className="category-eyebrow">K-pop favorites</p>
+          <h1 className="category-title">Idol Meals</h1>
+          <p className="category-description">Explore idols and their favorite Korean foods</p>
+        </div>
       </div>
 
       {/* IDOLS */}
       <div className="container">
         {loading ? (
-          <p>Loading...</p>
+          <div className="loading idol-loading">
+            <div className="spinner"></div>
+            <p>Loading idol meals...</p>
+          </div>
         ) : idols.length === 0 ? (
-          <p>No idols found</p>
+          <div className="wishlist-empty idol-empty">
+            <h2>No idols found</h2>
+            <p>Check back later for more idol meals.</p>
+          </div>
         ) : (
           <div className="idols-grid">
             {idols.map((idol) => (
@@ -113,11 +122,14 @@ const IdolMeals = () => {
                 <img
                   src={idol.image || "https://via.placeholder.com/300"}
                   alt={idol.name}
+                  className="idol-image"
                 />
-                <h3>{idol.name}</h3>
-                <p>{idol.groupName}</p>
+                <div className="idol-card-body">
+                  <h3 className="idol-name">{idol.name}</h3>
+                  <p className="idol-group">{idol.groupName}</p>
+                </div>
 
-                <button onClick={() => handleViewFavorites(idol)}>
+                <button className="view-favorites-btn" onClick={() => handleViewFavorites(idol)}>
                   View Meals ({idol.favoriteFoods?.length || 0})
                 </button>
               </div>
@@ -128,21 +140,38 @@ const IdolMeals = () => {
 
       {/* MODAL */}
       {showModal && selectedIdol && (
-        <div className="modal-overlay" onClick={handleOverlayClick}>
-          <div className="modal modal-large">
+        <div className="modal-overlay idol-modal-overlay" onClick={handleOverlayClick}>
+          <div className="modal modal-large idol-modal">
             <button className="close-btn" onClick={closeModal}>
-              ✕
+              X
             </button>
 
-            <h2 className="modal-title">{selectedIdol.name}</h2>
+            <div className="idol-modal-header">
+              <img
+                src={selectedIdol.image || "https://via.placeholder.com/120"}
+                alt={selectedIdol.name}
+                onError={(e) => {
+                  e.currentTarget.src = "https://via.placeholder.com/120";
+                }}
+              />
+              <div>
+                <p className="idol-modal-kicker">{selectedIdol.groupName}</p>
+                <h2 className="modal-title">{selectedIdol.name}</h2>
+                <p className="idol-modal-subtitle">
+                  {favoriteFoods.length} favorite {favoriteFoods.length === 1 ? "meal" : "meals"}
+                </p>
+              </div>
+            </div>
 
             {favoriteFoods.length === 0 ? (
-              <p>No foods found</p>
+              <div className="idol-modal-empty">No foods found</div>
             ) : (
-              <div className="products-grid">
-{favoriteFoods.map((food, index) => (
+              <div className="idol-modal-body">
+                <div className="products-grid idol-foods-modal-grid">
+                  {favoriteFoods.map((food, index) => (
                   <ProductCard key={food._id || `food-${index}`} product={food} />
                 ))}
+                </div>
               </div>
             )}
           </div>

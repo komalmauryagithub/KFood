@@ -41,14 +41,14 @@ const AdminOrders = () => {
 
   const statusOptions = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
 
-  if (loading) return <div className="loading">Loading orders... (Auto-refreshing)</div>;
+  if (loading) return <div className="admin-themed-page admin-loading-state loading">Loading orders... (Auto-refreshing)</div>;
 
   const handleManualRefresh = () => {
     fetchOrders();
   };
 
   return (
-    <div className="admin-orders">
+    <div className="admin-themed-page admin-orders">
       <div className="page-header">
         <h1>Order Management</h1>
         <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>

@@ -84,7 +84,7 @@ const MyOrders = () => {
 
   if (loading) {
   return (
-    <div className="orders-page">
+    <div className="kfood-themed-page orders-page">
       <div className="category-header">
         <div className="container">
           <h1 className="category-title">My Orders</h1>
@@ -99,7 +99,7 @@ const MyOrders = () => {
   }
 
   return (
-    <div className="orders-page">
+    <div className="kfood-themed-page orders-page">
       <h1 className="page-title">My Orders</h1>
 
       {error && <div className="error-message">{error}</div>}

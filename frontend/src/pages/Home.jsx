@@ -32,7 +32,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="kfood-themed-page home-page">
       {/* Hero Section */}
       <section className="hero">
         <div className="container">
@@ -47,7 +47,7 @@ const Home = () => {
       </section>
 
       {/* Products Section */}
-      <section className="container">
+      <section className="container featured-section">
         <h2 className="section-title">Our Featured Dishes</h2>
         
         {loading ? (
@@ -64,7 +64,7 @@ const Home = () => {
           </div>
         )}
 
-        <div style={{ textAlign: 'center', marginTop: '40px' }}>
+        <div className="section-actions">
           <Link to="/popular-foods" className="btn btn-secondary">
             View All Products
           </Link>
@@ -72,20 +72,23 @@ const Home = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="container" style={{ marginTop: '60px', marginBottom: '60px' }}>
+      <section className="container category-section">
         <h2 className="section-title">Browse by Category</h2>
-        <div className="products-grid">
-          <Link to="/drama-bites" className="product-card" style={{ textAlign: 'center', padding: '40px' }}>
-            <h3 style={{ color: '#1d3557', marginBottom: '10px' }}>🍽️ Drama Bites</h3>
-            <p style={{ color: '#6c757d' }}>Popular Korean dishes from your favorite dramas</p>
+        <div className="home-category-grid">
+          <Link to="/drama-bites" className="product-card category-card">
+            <span className="category-card-mark">DB</span>
+            <h3>Drama Bites</h3>
+            <p>Popular Korean dishes from your favorite dramas</p>
           </Link>
-          <Link to="/popular-foods" className="product-card" style={{ textAlign: 'center', padding: '40px' }}>
-            <h3 style={{ color: '#1d3557', marginBottom: '10px' }}>⭐ Popular Foods</h3>
-            <p style={{ color: '#6c757d' }}>Most loved Korean delicacies</p>
+          <Link to="/popular-foods" className="product-card category-card">
+            <span className="category-card-mark">PF</span>
+            <h3>Popular Foods</h3>
+            <p>Most loved Korean delicacies</p>
           </Link>
-          <Link to="/idol-meals" className="product-card" style={{ textAlign: 'center', padding: '40px' }}>
-            <h3 style={{ color: '#1d3557', marginBottom: '10px' }}>🎤 Idol Meals</h3>
-            <p style={{ color: '#6c757d' }}>Special meals for K-pop fans</p>
+          <Link to="/idol-meals" className="product-card category-card">
+            <span className="category-card-mark">IM</span>
+            <h3>Idol Meals</h3>
+            <p>Special meals for K-pop fans</p>
           </Link>
         </div>
       </section>

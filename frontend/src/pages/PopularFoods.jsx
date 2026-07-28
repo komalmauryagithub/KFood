@@ -25,7 +25,7 @@ const PopularFoods = () => {
   };
 
   return (
-    <div>
+    <div className="kfood-themed-page category-page popular-foods-page">
       {/* Category Header */}
       <div className="category-header">
         <div className="container">

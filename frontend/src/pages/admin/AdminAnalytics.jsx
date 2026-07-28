@@ -26,7 +26,7 @@ const AdminAnalytics = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading analytics... (Auto-refreshing)</div>;
+  if (loading) return <div className="admin-themed-page admin-loading-state loading">Loading analytics... (Auto-refreshing)</div>;
 
   const handleManualRefresh = () => {
     fetchAnalytics();
@@ -34,7 +34,7 @@ const AdminAnalytics = () => {
   };
 
   return (
-    <div className="admin-analytics">
+    <div className="admin-themed-page admin-analytics">
       <div className="page-header">
         <h1>Analytics</h1>
         <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>

@@ -26,14 +26,14 @@ const AdminUsers = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading users... (Auto-refreshing)</div>;
+  if (loading) return <div className="admin-themed-page admin-loading-state loading">Loading users... (Auto-refreshing)</div>;
 
   const handleManualRefresh = () => {
     fetchUsers();
   };
 
   return (
-    <div className="admin-users">
+    <div className="admin-themed-page admin-users">
       <div className="page-header">
         <h1>User Management</h1>
         <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>

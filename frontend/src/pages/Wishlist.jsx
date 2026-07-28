@@ -6,6 +6,43 @@ const Wishlist = () => {
   const [wishlist, setWishlist] = useState({ products: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [quantities, setQuantities] = useState({});
+
+  const getProduct = (item) => {
+    // Handle both populated MongoDB products and static data (idol foods)
+    if (item.product && item.product.name) return item.product;
+    if (item.staticData) return item.staticData;
+    if (item.product) {
+      return {
+        name: "Item",
+        image: "https://via.placeholder.com/300",
+        price: 0,
+        _id: item.product,
+      };
+    }
+    return null;
+  };
+
+  const getWishlistItemKey = (item) => {
+    const product = getProduct(item);
+    return product?._id || item.product?._id || item.product || item._id;
+  };
+
+  const setWishlistWithQuantities = (data) => {
+    const nextWishlist = data || { products: [] };
+    setWishlist(nextWishlist);
+
+    setQuantities((prev) => {
+      const nextQuantities = {};
+
+      (nextWishlist.products || []).forEach((item) => {
+        const key = getWishlistItemKey(item);
+        if (key) nextQuantities[key] = prev[key] || 1;
+      });
+
+      return nextQuantities;
+    });
+  };
 
   useEffect(() => {
     fetchWishlist();
@@ -15,7 +52,7 @@ const Wishlist = () => {
     try {
       setLoading(true);
       const res = await wishlistAPI.getWishlist();
-      setWishlist(res?.data || { products: [] });
+      setWishlistWithQuantities(res?.data || { products: [] });
     } catch (err) {
       setError("Failed to load wishlist");
       console.error(err);
@@ -27,7 +64,7 @@ const Wishlist = () => {
   const handleRemoveFromWishlist = async (productId) => {
     try {
       const res = await wishlistAPI.removeFromWishlist(productId);
-      setWishlist(res?.data || { products: [] });
+      setWishlistWithQuantities(res?.data || { products: [] });
     } catch (err) {
       console.error("Remove error:", err);
     }
@@ -35,6 +72,8 @@ const Wishlist = () => {
 
   const handleOrderNow = async (item) => {
     const product = item.product || item.staticData;
+    const itemKey = getWishlistItemKey(item);
+    const quantity = quantities[itemKey] || 1;
 
     if (!product) {
       alert("Product not found");
@@ -46,7 +85,7 @@ const Wishlist = () => {
         name: product.name,
         price: Number(product.price || 0),
         image: product.image,
-        quantity: 1,
+        quantity,
       };
 
       if (item.product?._id) {
@@ -77,12 +116,14 @@ const Wishlist = () => {
   };
 
   // ✅ safer product getter
-  const getProduct = (item) => {
-    // Handle both populated MongoDB products and static data (idol foods)
-    if (item.product && item.product.name) return item.product;
-    if (item.staticData) return item.staticData;
-    if (item.product) return { name: 'Item', image: 'https://via.placeholder.com/300', price: 0, _id: item.product };
-    return null;
+  const handleQuantityChange = (item, delta) => {
+    const itemKey = getWishlistItemKey(item);
+    if (!itemKey) return;
+
+    setQuantities((prev) => ({
+      ...prev,
+      [itemKey]: Math.max(1, (prev[itemKey] || 1) + delta),
+    }));
   };
 
   if (loading) {
@@ -110,9 +151,11 @@ const Wishlist = () => {
           {wishlist.products.map((item) => {
             const product = getProduct(item);
             if (!product) return null;
+            const itemKey = getWishlistItemKey(item);
+            const quantity = quantities[itemKey] || 1;
 
             return (
-              <div key={product._id} className="product-card">
+              <div key={itemKey} className="product-card">
                 <img
                   src={product.image}
                   alt={product.name}
@@ -128,6 +171,28 @@ const Wishlist = () => {
 
                   <div className="product-price">
                     ₹{Number(product.price || 0).toFixed(2)}
+                  </div>
+
+                  <div className="wishlist-quantity-selector">
+                    <span>Quantity</span>
+                    <div className="wishlist-qty-controls">
+                      <button
+                        type="button"
+                        className="wishlist-qty-btn"
+                        onClick={() => handleQuantityChange(item, -1)}
+                        disabled={quantity <= 1}
+                      >
+                        -
+                      </button>
+                      <strong className="wishlist-qty-value">{quantity}</strong>
+                      <button
+                        type="button"
+                        className="wishlist-qty-btn"
+                        onClick={() => handleQuantityChange(item, 1)}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
 
                   <div className="product-actions">

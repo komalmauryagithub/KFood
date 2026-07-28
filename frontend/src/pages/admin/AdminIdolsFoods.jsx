@@ -92,10 +92,10 @@ const AdminIdolsFoods = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading idols...</div>;
+  if (loading) return <div className="admin-themed-page admin-loading-state loading">Loading idols...</div>;
 
   return (
-    <div className="admin-idols">
+    <div className="admin-themed-page admin-idols admin-idol-meals-list">
       
       <div className="page-header">
         <h1>Idol Meals Management</h1>

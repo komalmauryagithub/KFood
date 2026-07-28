@@ -29,14 +29,14 @@ const AdminDashboard = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading dashboard... (Auto-refreshing)</div>;
+  if (loading) return <div className="admin-themed-page admin-loading-state loading">Loading dashboard... (Auto-refreshing)</div>;
 
   const handleManualRefresh = () => {
     fetchDashboard();
   };
 
   return (
-    <div className="admin-dashboard">
+    <div className="admin-themed-page admin-dashboard">
       <div className="page-header">
         <h1>Dashboard Overview</h1>
         <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>

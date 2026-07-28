@@ -26,8 +26,12 @@ const Login = () => {
     setLoading(true);
 
     try {
-      await login(formData.email, formData.password);
-      navigate('/');
+      const loggedInUser = await login(formData.email, formData.password);
+      if (loggedInUser.role === 'admin') {
+        navigate(sessionStorage.getItem('lastAdminPath') || '/admin');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     } finally {
@@ -36,7 +40,7 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-page">
+    <div className="kfood-themed-page auth-page login-page">
       <h1 className="auth-title">Login</h1>
       
       {error && <div className="error-message">{error}</div>}

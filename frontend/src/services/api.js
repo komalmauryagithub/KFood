@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // ✅ ENV URL
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL || "/api";
 
 // ✅ AXIOS INSTANCE
 const api = axios.create({
@@ -108,6 +108,8 @@ export const contactAPI = {
 // ================= IDOL (🔥 FIXED) =================
 export const idolAPI = {
   getAll: () => api.get("/idols"),
+  getAllFavoriteFoods: () => api.get("/idols/favorite-foods"),
+  getFavoriteFoods: (idolId) => api.get(`/idols/${idolId}/foods`),
   create: (data) => api.post("/idols", data),
   update: (id, data) => api.put(`/idols/${id}`, data),
   delete: (id) => api.delete(`/idols/${id}`),

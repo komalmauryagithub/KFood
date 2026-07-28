@@ -1,0 +1,522 @@
+.admin-idol-meals {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  color: #1f2937;
+}
+
+.admin-idol-meals h2,
+.admin-idol-meals h3 {
+  margin: 0.75rem 0 0.25rem;
+  color: #111827;
+  line-height: 1.2;
+}
+
+.admin-idol-meals form,
+.admin-idol-meals > div:not(.table-scroll):not(.idol-image-lightbox) {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  padding: 1rem;
+}
+
+.admin-idol-meals input,
+.admin-idol-meals select,
+.admin-idol-meals textarea {
+  width: min(100%, 340px);
+  margin: 0.35rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 0.95rem;
+}
+
+.admin-idol-meals textarea {
+  min-height: 82px;
+  resize: vertical;
+  vertical-align: top;
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.idol-meals-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.idol-meals-table th,
+.idol-meals-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #eef2f7;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.idol-meals-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.idol-meals-table tbody tr:hover {
+  background: #fff7ed;
+}
+
+.idol-meals-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.image-preview-btn {
+  position: relative;
+  display: inline-flex;
+  width: 64px;
+  height: 64px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f8fafc;
+  box-shadow: none;
+}
+
+.image-preview-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.image-preview-btn:hover img {
+  transform: scale(1.06);
+}
+
+.image-preview-icon {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.72);
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.image-preview-btn:hover .image-preview-icon,
+.image-preview-btn:focus-visible .image-preview-icon {
+  opacity: 1;
+}
+
+.idol-thumb {
+  width: 58px;
+  height: 58px;
+}
+
+.food-thumb {
+  width: 70px;
+  height: 58px;
+}
+
+.idol-image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.78);
+}
+
+.idol-image-lightbox-content {
+  position: relative;
+  display: flex;
+  width: min(92vw, 980px);
+  max-height: 90vh;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+}
+
+.idol-image-lightbox-content img {
+  width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.idol-image-lightbox-content p {
+  margin: 0;
+  color: #334155;
+  font-weight: 600;
+  text-align: center;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.82);
+  color: #ffffff;
+}
+
+.lightbox-close-btn:hover {
+  background: #ef4444;
+}
+
+@media (max-width: 720px) {
+  .admin-idol-meals input,
+  .admin-idol-meals select,
+  .admin-idol-meals textarea {
+    width: 100%;
+    margin: 0.35rem 0;
+  }
+
+  .admin-idol-meals form,
+  .admin-idol-meals > div:not(.table-scroll):not(.idol-image-lightbox) {
+    padding: 0.85rem;
+  }
+
+  .idol-image-lightbox {
+    padding: 0.75rem;
+  }
+}
+
+/* Wishlist-inspired admin Idol Meals theme */
+.admin-idol-meals {
+  --idol-admin-ink: #0f172a;
+  --idol-admin-text: #1e293b;
+  --idol-admin-muted: #64748b;
+  --idol-admin-soft: #f8fafc;
+  --idol-admin-warm: #fff7ed;
+  --idol-admin-line: #e2e8f0;
+  --idol-admin-line-strong: #cbd5e1;
+  --idol-admin-red: #e11d48;
+  --idol-admin-red-dark: #be123c;
+  --idol-admin-blue: #2563eb;
+  --idol-admin-green: #059669;
+  --idol-admin-amber: #d97706;
+  --idol-admin-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+  --idol-admin-shadow-hover: 0 12px 28px rgba(15, 23, 42, 0.1);
+
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1.15rem;
+  color: var(--idol-admin-text);
+}
+
+.admin-idol-meals.admin-idol-loading {
+  min-height: calc(100vh - 4rem);
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  border: 1px solid var(--idol-admin-line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--idol-admin-shadow);
+  color: var(--idol-admin-muted);
+  font-weight: 800;
+}
+
+.admin-idol-meals .page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0 1rem;
+  border-bottom: 1px solid var(--idol-admin-line);
+}
+
+.admin-idol-meals .admin-page-kicker {
+  margin: 0 0 0.25rem;
+  color: var(--idol-admin-red);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.admin-idol-meals .page-header h1 {
+  margin: 0;
+  color: var(--idol-admin-ink);
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
+  line-height: 1.15;
+}
+
+.admin-idol-meals .page-header p:not(.admin-page-kicker) {
+  margin: 0.35rem 0 0;
+  color: var(--idol-admin-muted);
+  font-size: 0.95rem;
+}
+
+.admin-idol-meals h2,
+.admin-idol-meals h3 {
+  margin: 0.35rem 0 0;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid var(--idol-admin-line);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: var(--idol-admin-soft);
+  color: var(--idol-admin-ink);
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.admin-idol-meals form,
+.admin-idol-meals > div:not(.page-header):not(.table-scroll):not(.idol-image-lightbox):not(.idol-image-lightbox-content) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: -1.15rem;
+  padding: 1rem;
+  border: 1px solid var(--idol-admin-line);
+  border-radius: 0 0 8px 8px;
+  background: #ffffff;
+  box-shadow: var(--idol-admin-shadow);
+}
+
+.admin-idol-meals form button,
+.admin-idol-meals > div:not(.page-header):not(.table-scroll):not(.idol-image-lightbox):not(.idol-image-lightbox-content) button {
+  width: fit-content;
+}
+
+.admin-idol-meals .admin-idol-food-form {
+  grid-template-columns: 1fr;
+}
+
+.admin-idol-meals .admin-idol-food-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.admin-idol-meals .admin-idol-food-row textarea {
+  grid-column: 1 / -1;
+}
+
+.admin-idol-meals .admin-idol-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.admin-idol-meals > select {
+  max-width: 420px;
+}
+
+.admin-idol-meals input,
+.admin-idol-meals select,
+.admin-idol-meals textarea {
+  width: 100%;
+  min-height: 42px;
+  margin: 0;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid var(--idol-admin-line-strong);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--idol-admin-ink);
+  font-size: 0.94rem;
+}
+
+.admin-idol-meals textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.admin-idol-meals input:focus,
+.admin-idol-meals select:focus,
+.admin-idol-meals textarea:focus {
+  outline: none;
+  border-color: rgba(225, 29, 72, 0.52);
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+}
+
+.admin-idol-meals .btn-add,
+.admin-idol-meals .btn-edit,
+.admin-idol-meals .btn-danger,
+.admin-idol-meals .btn-secondary {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  margin: 0.15rem 0.25rem 0.15rem 0;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.admin-idol-meals .btn-add,
+.admin-idol-meals .btn-edit,
+.admin-idol-meals .btn-secondary {
+  border: 1px solid var(--idol-admin-line-strong);
+  background: #ffffff;
+  color: var(--idol-admin-text);
+}
+
+.admin-idol-meals .btn-add:hover,
+.admin-idol-meals .btn-edit:hover,
+.admin-idol-meals .btn-secondary:hover {
+  background: var(--idol-admin-ink);
+  color: #ffffff;
+}
+
+.admin-idol-meals .btn-danger {
+  border: 1px solid #fecdd3;
+  background: #fff1f2;
+  color: var(--idol-admin-red-dark);
+}
+
+.admin-idol-meals .btn-danger:hover {
+  background: var(--idol-admin-red);
+  color: #ffffff;
+}
+
+.admin-idol-meals .table-scroll {
+  width: 100%;
+  margin-top: -1.15rem;
+  overflow-x: auto;
+  border: 1px solid var(--idol-admin-line);
+  border-radius: 0 0 8px 8px;
+  background: #ffffff;
+  box-shadow: var(--idol-admin-shadow);
+}
+
+.admin-idol-meals .idol-meals-table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.admin-idol-meals .idol-meals-table th,
+.admin-idol-meals .idol-meals-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #eef2f7;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-idol-meals .idol-meals-table th {
+  background: #ffffff;
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.admin-idol-meals .idol-meals-table tbody tr {
+  background: #ffffff;
+  transition: background-color 0.18s ease;
+}
+
+.admin-idol-meals .idol-meals-table tbody tr:nth-child(even) {
+  background: #fbfdff;
+}
+
+.admin-idol-meals .idol-meals-table tbody tr:hover {
+  background: var(--idol-admin-warm);
+}
+
+.admin-idol-meals .idol-meals-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.admin-idol-meals .image-preview-btn {
+  width: 58px;
+  height: 58px;
+  border: 1px solid var(--idol-admin-line);
+  border-radius: 8px;
+  background: #f1f5f9;
+}
+
+.admin-idol-meals .food-thumb {
+  width: 68px;
+  height: 58px;
+}
+
+.admin-idol-meals .image-preview-icon {
+  background: rgba(15, 23, 42, 0.76);
+}
+
+.admin-idol-meals .idol-image-lightbox {
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.admin-idol-meals .idol-image-lightbox-content {
+  border: 1px solid var(--idol-admin-line);
+  border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.34);
+}
+
+.admin-idol-meals .lightbox-close-btn {
+  background: rgba(15, 23, 42, 0.84);
+}
+
+.admin-idol-meals .lightbox-close-btn:hover {
+  background: var(--idol-admin-red);
+}
+
+.admin-idol-meals > p {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--idol-admin-line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--idol-admin-shadow);
+  color: var(--idol-admin-muted);
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .admin-idol-meals form,
+  .admin-idol-meals > div:not(.page-header):not(.table-scroll):not(.idol-image-lightbox):not(.idol-image-lightbox-content) {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-idol-meals .admin-idol-food-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-idol-meals .page-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

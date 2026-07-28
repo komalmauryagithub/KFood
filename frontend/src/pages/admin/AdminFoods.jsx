@@ -132,11 +132,25 @@ const AdminFoods = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  const isIdolMealsSection = selectedCategory === "Idol Meals";
+
+  if (loading) {
+    return (
+      <div className={`${isIdolMealsSection ? "" : "admin-themed-page "}admin-foods admin-loading-state`}>
+        Loading...
+      </div>
+    );
+  }
 
   return (
-    <div className="admin-foods">
-      <h1>Food Management</h1>
+    <div className={`${isIdolMealsSection ? "" : "admin-themed-page "}admin-foods`}>
+      <div className="page-header">
+        <div>
+          <p className="admin-page-kicker">Admin Panel</p>
+          <h1>Food Management</h1>
+          <p>Manage Drama Bites and Popular Foods menu items.</p>
+        </div>
+      </div>
 
       {/* CATEGORY TABS */}
       <div className="category-tabs">
@@ -152,7 +166,7 @@ const AdminFoods = () => {
       </div>
 
       {/* FORM */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="admin-form-panel">
         <input
           name="name"
           value={formData.name || ""}
@@ -207,54 +221,62 @@ const AdminFoods = () => {
       </form>
 
       {/* TABLE */}
-      <table>
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Info</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {foods.map((food) => (
-            <tr key={food._id}>
-              <td>
-                <img
-                  src={food.image}
-                  alt={food.name}
-                  width="50"
-                  onError={(e) =>
-                    (e.target.src =
-                      "https://via.placeholder.com/50")
-                  }
-                />
-              </td>
-
-              <td>{food.name}</td>
-
-              <td>
-                {selectedCategory === "Idol Meals"
-                  ? food?.idol
-                    ? `${food.idol.name} (${food.idol.groupName})`
-                    : "N/A"
-                : `$${Number(food.price || 0).toFixed(2)}`}
-              </td>
-
-              <td>
-                <button onClick={() => handleEdit(food)} className="btn btn-small btn-secondary">
-                  Edit
-                </button>
-
-                <button onClick={() => handleDelete(food._id)} className="btn btn-small btn-danger">
-                  Delete
-                </button>
-              </td>
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Info</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {foods.length === 0 ? (
+              <tr>
+                <td colSpan="4">No foods found</td>
+              </tr>
+            ) : (
+              foods.map((food) => (
+                <tr key={food._id}>
+                  <td>
+                    <img
+                      src={food.image}
+                      alt={food.name}
+                      width="50"
+                      onError={(e) =>
+                        (e.target.src =
+                          "https://via.placeholder.com/50")
+                      }
+                    />
+                  </td>
+
+                  <td>{food.name}</td>
+
+                  <td>
+                    {selectedCategory === "Idol Meals"
+                      ? food?.idol
+                        ? `${food.idol.name} (${food.idol.groupName})`
+                        : "N/A"
+                    : `$${Number(food.price || 0).toFixed(2)}`}
+                  </td>
+
+                  <td>
+                    <button onClick={() => handleEdit(food)} className="btn btn-small btn-secondary">
+                      Edit
+                    </button>
+
+                    <button onClick={() => handleDelete(food._id)} className="btn btn-small btn-danger">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

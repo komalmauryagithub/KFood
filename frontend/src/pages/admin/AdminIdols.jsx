@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
+import { X, ZoomIn } from "lucide-react";
 import { idolAPI } from "../../services/api";
 import "../../styles/admin/Buttons.css";
+import "../../styles/admin/AdminIdolMeals.css";
 
 const AdminIdols = () => {
   const [idols, setIdols] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingIdol, setEditingIdol] = useState(null);
   const [editingFood, setEditingFood] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,6 +29,7 @@ const AdminIdols = () => {
     { name: "", image: "", description: "", price: 0 },
   ]);
   const [allFoods, setAllFoods] = useState([]);
+  const placeholderImage = "https://via.placeholder.com/120?text=No+Image";
 
   // ✅ Fetch idols
   useEffect(() => {
@@ -68,6 +72,7 @@ const AdminIdols = () => {
           ...food,
           idolId: idol._id,
           idolName: idol.name,
+          idolImage: idol.image,
           index,
         });
       });
@@ -164,10 +169,52 @@ const AdminIdols = () => {
     fetchIdols();
   };
 
-  if (loading) return <p>Loading...</p>;
+  const openImagePreview = (src, title) => {
+    setPreviewImage({
+      src: src || placeholderImage,
+      title,
+    });
+  };
+
+  const renderImagePreviewButton = (src, title, className = "") => (
+    <button
+      type="button"
+      className={`image-preview-btn ${className}`}
+      onClick={() => openImagePreview(src, title)}
+      title={`View ${title}`}
+      aria-label={`View ${title}`}
+    >
+      <img
+        src={src || placeholderImage}
+        alt={title}
+        onError={(e) => {
+          e.currentTarget.src = placeholderImage;
+        }}
+      />
+      <span className="image-preview-icon" aria-hidden="true">
+        <ZoomIn size={16} />
+      </span>
+    </button>
+  );
+
+  if (loading) {
+    return (
+      <div className="admin-themed-page admin-idol-meals admin-idol-loading">
+        Loading idol meals...
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className="admin-themed-page admin-idol-meals">
+      <div className="page-header">
+        <div>
+          <p className="admin-page-kicker">Admin Panel</p>
+          <h1>Idol Meals Management</h1>
+          <p>Manage idols, favorite foods, images, and prices.</p>
+        </div>
+      </div>
+
       {/* ADD / EDIT IDOL */}
       <h2>{editingIdol ? "Edit Idol" : "Add Idol"}</h2>
       <form onSubmit={handleIdolSubmit}>
@@ -182,6 +229,7 @@ const AdminIdols = () => {
 
       {/* ADD FOODS */}
       <h2>Add Foods</h2>
+      <div className="admin-idol-food-form">
 
       {idols.length === 0 && <p>No idols available ❌</p>}
 
@@ -196,64 +244,110 @@ const AdminIdols = () => {
       </select>
 
       {foods.map((f, i) => (
-        <div key={i}>
+        <div key={i} className="admin-idol-food-row">
           <input value={f.name} placeholder="Food Name" onChange={(e) => handleFoodsChange(i, "name", e.target.value)} />
           <input value={f.image} placeholder="Image" onChange={(e) => handleFoodsChange(i, "image", e.target.value)} />
           <input value={f.price} type="number" placeholder="Price" onChange={(e) => handleFoodsChange(i, "price", Number(e.target.value))} />
-          <textarea value={f.description} placeholder="Desc" onChange={(e) => handleFoodsChange(i, "description", e.target.value)} />
+          <textarea value={f.description} placeholder="Description" onChange={(e) => handleFoodsChange(i, "description", e.target.value)} />
         </div>
       ))}
 
+      <div className="admin-idol-actions">
       <button className="btn-add" onClick={addFood}>+ Add More</button>
       <button className="btn-add" onClick={submitFoods}>Save Foods</button>
+      </div>
+      </div>
 
       {/* IDOLS TABLE */}
       <h2>All Idols</h2>
-      <table>
-        <tbody>
-          {idols.map((idol) => (
-            <tr key={idol._id}>
-              <td>{idol.name}</td>
-              <td>{idol.groupName}</td>
-              <td>{idol.favoriteFoods?.length || 0}</td>
-              <td>
-                <button
-                  className="btn-edit"
-                  onClick={() => {
-                    setEditingIdol(idol);
-                    setFormData({
-                      name: idol.name,
-                      groupName: idol.groupName,
-                      image: idol.image,
-                    });
-                  }}
-                >
-                  Edit
-                </button>
-
-                <button
-                  className="btn-danger"
-                  onClick={() => handleDeleteIdol(idol._id)}
-                >
-                  Delete
-                </button>
-              </td>
+      <div className="table-scroll">
+        <table className="idol-meals-table">
+          <thead>
+            <tr>
+              <th>Idol Pic</th>
+              <th>Name</th>
+              <th>Group</th>
+              <th>Foods</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {idols.map((idol) => (
+              <tr key={idol._id}>
+                <td>
+                  {renderImagePreviewButton(
+                    idol.image,
+                    `${idol.name || "Idol"} photo`,
+                    "idol-thumb"
+                  )}
+                </td>
+                <td>{idol.name}</td>
+                <td>{idol.groupName}</td>
+                <td>{idol.favoriteFoods?.length || 0}</td>
+                <td>
+                  <button
+                    className="btn-edit"
+                    onClick={() => {
+                      setEditingIdol(idol);
+                      setFormData({
+                        name: idol.name,
+                        groupName: idol.groupName,
+                        image: idol.image,
+                      });
+                    }}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="btn-danger"
+                    onClick={() => handleDeleteIdol(idol._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* FOODS TABLE */}
       <h2>All Favorite Foods</h2>
-      <table>
-        <tbody>
+      <div className="table-scroll">
+        <table className="idol-meals-table">
+          <thead>
+            <tr>
+              <th>Idol Pic</th>
+              <th>Food Pic</th>
+              <th>Idol</th>
+              <th>Food</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
           {allFoods.length === 0 ? (
             <tr>
-              <td>No Foods Found ❌</td>
+              <td colSpan="6">No Foods Found</td>
             </tr>
           ) : (
             allFoods.map((food, i) => (
               <tr key={i}>
+                <td>
+                  {renderImagePreviewButton(
+                    food.idolImage,
+                    `${food.idolName || "Idol"} photo`,
+                    "idol-thumb"
+                  )}
+                </td>
+                <td>
+                  {renderImagePreviewButton(
+                    food.image,
+                    `${food.name || "Food"} photo`,
+                    "food-thumb"
+                  )}
+                </td>
                 <td>{food.idolName}</td>
                 <td>{food.name}</td>
                 <td>${food.price}</td>
@@ -285,8 +379,9 @@ const AdminIdols = () => {
               </tr>
             ))
           )}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
 
       {/* EDIT FOOD */}
       {editingFood && (
@@ -325,6 +420,40 @@ const AdminIdols = () => {
           <button className="btn-secondary" onClick={() => setEditingFood(null)}>
             Cancel
           </button>
+        </div>
+      )}
+
+      {previewImage && (
+        <div
+          className="idol-image-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={previewImage.title}
+          onClick={() => setPreviewImage(null)}
+        >
+          <div
+            className="idol-image-lightbox-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="lightbox-close-btn"
+              onClick={() => setPreviewImage(null)}
+              aria-label="Close image preview"
+              title="Close"
+            >
+              <X size={22} />
+            </button>
+
+            <img
+              src={previewImage.src}
+              alt={previewImage.title}
+              onError={(e) => {
+                e.currentTarget.src = placeholderImage;
+              }}
+            />
+            <p>{previewImage.title}</p>
+          </div>
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -22,14 +22,18 @@ import AdminWishlist from "./pages/admin/AdminWishlist";
 import AdminContacts from "./pages/admin/AdminContacts";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminIdols from "./pages/admin/AdminIdols";
-import AdminLogin from "./pages/AdminLogin";
 import AdminIdolsFoods from "./pages/admin/AdminIdolsFoods";
 
 function App() {
+  const location = useLocation();
+  const isAdminPage =
+    location.pathname === "/admin" ||
+    location.pathname.startsWith("/admin/");
+
   return (
     <div className="app">
-      <Navbar />
-      <main className="main-content">
+      {!isAdminPage && <Navbar />}
+      <main className={`main-content ${isAdminPage ? "admin-route-content" : ""}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/drama-bites" element={<DramaBites />} />
@@ -38,7 +42,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/admin-login" element={<Navigate to="/login" replace />} />
           <Route
             path="/wishlist"
             element={
@@ -64,7 +68,7 @@ function App() {
             }
           >
             <Route index element={<AdminDashboard />} />
-            <Route path="dashboard" element={<AdminDashboard />} /> ✅
+            <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="foods" element={<AdminFoods />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="users" element={<AdminUsers />} />
@@ -76,7 +80,7 @@ function App() {
           </Route>
         </Routes>
       </main>
-      <Footer />
+      {!isAdminPage && <Footer />}
     </div>
   );
 }

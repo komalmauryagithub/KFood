@@ -112,7 +112,7 @@ videoUrl: `https://www.youtube.com/embed/${videoId.split('/embed/')[1]?.split('?
   };
 
   return (
-    <div>
+    <div className="kfood-themed-page category-page drama-bites-page">
       {/* Category Header */}
       <div className="category-header">
         <div className="container">

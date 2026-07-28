@@ -25,7 +25,7 @@ const AICook = () => {
   };
 
   return (
-    <div>
+    <div className="kfood-themed-page category-page ai-cook-page">
       {/* Category Header */}
       <div className="category-header">
         <div className="container">

@@ -26,14 +26,14 @@ const AdminContacts = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading contacts... (Auto-refreshing)</div>;
+  if (loading) return <div className="admin-themed-page admin-loading-state loading">Loading contacts... (Auto-refreshing)</div>;
 
   const handleManualRefresh = () => {
     fetchContacts();
   };
 
   return (
-    <div className="admin-contacts">
+    <div className="admin-themed-page admin-contacts">
       <div className="page-header">
         <h1>Contact Messages</h1>
         <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>

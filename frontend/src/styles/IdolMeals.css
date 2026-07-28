@@ -893,4 +893,603 @@ p {
   transition: 0.3s;
 }
 
+/* Wishlist-inspired user theme for Idol Meals */
+.idol-meals-page {
+  min-height: calc(100vh - 80px);
+  padding-bottom: 64px;
+  background:
+    linear-gradient(180deg, var(--kfood-page-bg, #fffaf7) 0%, #f7fbff 46%, #ffffff 100%);
+}
+
+.idol-meals-page .category-header {
+  position: relative;
+  overflow: hidden;
+  margin-top: -20px;
+  margin-bottom: 48px;
+  padding: clamp(52px, 8vw, 88px) 20px;
+  background:
+    linear-gradient(135deg, rgba(29, 53, 87, 0.96) 0%, rgba(69, 123, 157, 0.92) 48%, rgba(230, 57, 70, 0.9) 100%);
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 18px 42px rgba(29, 53, 87, 0.18);
+}
+
+.idol-meals-page .category-header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 9px;
+  background: linear-gradient(90deg, var(--kfood-red, #e63946), var(--kfood-gold, #f4a261), var(--kfood-teal, #2a9d8f));
+}
+
+.idol-meals-page .category-eyebrow {
+  margin: 0 0 0.55rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.idol-meals-page .category-title {
+  margin-bottom: 14px;
+  color: #ffffff;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+  text-shadow: none;
+}
+
+.idol-meals-page .category-description {
+  max-width: 680px;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(1rem, 2vw, 1.16rem);
+}
+
+.idol-meals-page .container {
+  width: min(100%, 1180px);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.idol-meals-page .idols-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 26px;
+  padding: 12px 0 54px;
+}
+
+.idol-meals-page .idol-card {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--kfood-line, rgba(29, 53, 87, 0.12));
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf8 100%);
+  box-shadow: var(--kfood-card-shadow, 0 16px 38px rgba(29, 53, 87, 0.12));
+  text-align: center;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.idol-meals-page .idol-card::before {
+  display: none;
+}
+
+.idol-meals-page .idol-card:hover {
+  border-color: rgba(230, 57, 70, 0.22);
+  box-shadow: var(--kfood-card-shadow-hover, 0 22px 48px rgba(230, 57, 70, 0.18));
+  transform: translateY(-6px);
+}
+
+.idol-meals-page .idol-image,
+.idol-meals-page .idol-card img {
+  width: 100%;
+  height: 245px;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+  background: #f1f5f9;
+  box-shadow: none;
+}
+
+.idol-meals-page .idol-card-body {
+  flex: 1;
+  padding: 18px 18px 8px;
+}
+
+.idol-meals-page .idol-name,
+.idol-meals-page .idol-card h3 {
+  margin: 0 0 6px;
+  color: var(--kfood-ink, #1d3557);
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1.25;
+  text-shadow: none;
+}
+
+.idol-meals-page .idol-group,
+.idol-meals-page .idol-card p {
+  margin: 0;
+  color: var(--kfood-muted, #687386);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: none;
+}
+
+.idol-meals-page .view-favorites-btn,
+.idol-meals-page .idol-card button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 18px 18px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--kfood-red, #e63946) 0%, #ff7043 100%);
+  box-shadow: 0 10px 22px rgba(230, 57, 70, 0.24);
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.idol-meals-page .view-favorites-btn:hover,
+.idol-meals-page .idol-card button:hover {
+  background: linear-gradient(135deg, var(--kfood-red, #e63946) 0%, #ff7043 100%);
+  box-shadow: 0 14px 28px rgba(230, 57, 70, 0.3);
+  transform: translateY(-1px);
+}
+
+.idol-meals-page .idol-loading {
+  min-height: 320px;
+}
+
+.idol-meals-page .idol-loading p {
+  margin-top: 14px;
+  color: var(--kfood-muted, #687386);
+  font-weight: 700;
+  text-align: center;
+}
+
+.idol-meals-page .idol-empty {
+  margin-top: 18px;
+}
+
+.idol-meals-page .idol-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.idol-meals-page .idol-modal {
+  position: relative;
+  width: min(95vw, 1120px);
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 28px;
+  border: 1px solid var(--kfood-line, rgba(29, 53, 87, 0.12));
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf8 100%);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+}
+
+.idol-meals-page .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--kfood-line, rgba(29, 53, 87, 0.12));
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--kfood-ink, #1d3557);
+  font-size: 0.85rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.idol-meals-page .close-btn:hover {
+  background: var(--kfood-red, #e63946);
+  color: #ffffff;
+}
+
+.idol-meals-page .modal-title {
+  position: relative;
+  margin: 0 42px 20px;
+  padding-bottom: 14px;
+  color: var(--kfood-ink, #1d3557);
+  font-size: clamp(1.45rem, 4vw, 2rem);
+  font-weight: 800;
+  text-align: center;
+}
+
+.idol-meals-page .modal-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 72px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--kfood-red, #e63946), var(--kfood-gold, #f4a261));
+  transform: translateX(-50%);
+}
+
+.idol-meals-page .idol-modal > p {
+  margin: 26px 0 8px;
+  color: var(--kfood-muted, #687386);
+  font-weight: 700;
+  text-align: center;
+}
+
+.idol-meals-page .idol-modal .products-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 10px 0 0;
+}
+
+.idol-meals-page .idol-modal .product-card {
+  border-bottom: 1px solid var(--kfood-line, rgba(29, 53, 87, 0.12));
+  padding: 0;
+}
+
+.idol-meals-page .idol-modal .product-actions .order-btn {
+  background: linear-gradient(135deg, var(--kfood-red, #e63946) 0%, #ff7043 100%);
+  color: #ffffff;
+}
+
+.idol-meals-page .idol-modal .product-actions .wishlist-btn {
+  border: 1px solid rgba(230, 57, 70, 0.38);
+  background: #ffffff;
+  color: var(--kfood-red, #e63946);
+}
+
+.idol-meals-page .idol-modal .product-actions .wishlist-btn:hover {
+  background: rgba(230, 57, 70, 0.08);
+  color: var(--kfood-red-dark, #c1121f);
+}
+
+.idol-meals-page .idol-modal .quantity-selector .qty-btn {
+  background: #ffffff;
+  color: var(--kfood-red, #e63946);
+}
+
+.idol-meals-page .idol-modal .quantity-selector .qty-btn:hover:not(:disabled) {
+  background: var(--kfood-red, #e63946);
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .idol-meals-page {
+    padding-bottom: 46px;
+  }
+
+  .idol-meals-page .category-header {
+    margin-bottom: 34px;
+    padding: 48px 16px;
+  }
+
+  .idol-meals-page .container {
+    padding: 0 15px;
+  }
+
+  .idol-meals-page .idols-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-bottom: 38px;
+  }
+
+  .idol-meals-page .idol-image,
+  .idol-meals-page .idol-card img {
+    height: 230px;
+  }
+
+  .idol-meals-page .idol-modal-overlay {
+    padding: 12px;
+  }
+
+  .idol-meals-page .idol-modal {
+    width: 100%;
+    padding: 22px 14px;
+  }
+
+  .idol-meals-page .modal-title {
+    margin-right: 44px;
+    margin-left: 44px;
+  }
+}
+
+/* Final card fit fixes */
+.idol-meals-page .idol-card {
+  overflow: hidden;
+}
+
+.idol-meals-page .idol-image,
+.idol-meals-page .idol-card img {
+  display: block;
+  height: 270px;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.idol-meals-page .view-favorites-btn,
+.idol-meals-page .idol-card button {
+  width: calc(100% - 36px);
+  max-width: calc(100% - 36px);
+  box-sizing: border-box;
+  align-self: center;
+  margin: 10px 18px 18px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .idol-meals-page .idol-image,
+  .idol-meals-page .idol-card img {
+    height: 260px;
+  }
+}
+
+/* Polished meals modal */
+.idol-meals-page .idol-modal-overlay {
+  align-items: center;
+  justify-content: center;
+  padding: clamp(14px, 3vw, 30px);
+  background: rgba(15, 23, 42, 0.76);
+}
+
+.idol-meals-page .idol-modal {
+  display: flex;
+  width: min(96vw, 960px);
+  max-width: 960px;
+  height: min(90vh, 760px);
+  max-height: calc(100vh - 42px);
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.idol-meals-page .idol-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 68px 22px 28px;
+  border-bottom: 1px solid var(--kfood-line, rgba(29, 53, 87, 0.12));
+  background:
+    linear-gradient(135deg, rgba(255, 247, 243, 0.96), rgba(255, 255, 255, 0.98));
+}
+
+.idol-meals-page .idol-modal-header img {
+  width: 74px;
+  height: 74px;
+  flex: 0 0 auto;
+  border: 3px solid #ffffff;
+  border-radius: 16px;
+  object-fit: cover;
+  object-position: top center;
+  box-shadow: 0 10px 24px rgba(29, 53, 87, 0.16);
+}
+
+.idol-meals-page .idol-modal-header > div {
+  min-width: 0;
+}
+
+.idol-meals-page .idol-modal-kicker {
+  margin: 0 0 4px;
+  color: var(--kfood-red, #e63946);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.idol-meals-page .idol-modal .modal-title {
+  margin: 0;
+  padding: 0;
+  color: var(--kfood-ink, #1d3557);
+  font-size: clamp(1.55rem, 3vw, 2.25rem);
+  line-height: 1.12;
+  text-align: left;
+}
+
+.idol-meals-page .idol-modal .modal-title::after {
+  display: none;
+}
+
+.idol-meals-page .idol-modal-subtitle {
+  margin: 6px 0 0;
+  color: var(--kfood-muted, #687386);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.idol-meals-page .idol-modal .close-btn {
+  top: 24px;
+  right: 24px;
+  z-index: 2;
+  width: 38px;
+  max-width: 38px;
+  min-width: 38px;
+  flex: 0 0 38px;
+  border-color: rgba(230, 57, 70, 0.24);
+  box-shadow: 0 8px 18px rgba(29, 53, 87, 0.1);
+}
+
+.idol-meals-page .idol-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #fffaf8 100%);
+}
+
+.idol-meals-page .idol-foods-modal-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: center;
+  gap: 12px 10px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.idol-meals-page .idol-foods-modal-grid .product-card {
+  width: 310px;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--kfood-line, rgba(29, 53, 87, 0.12));
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf8 100%);
+  box-shadow: 0 10px 24px rgba(29, 53, 87, 0.1);
+}
+
+.idol-meals-page .idol-foods-modal-grid .product-image {
+  height: 165px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.idol-meals-page .idol-foods-modal-grid .product-info {
+  padding: 14px;
+}
+
+.idol-meals-page .idol-foods-modal-grid .product-category:empty {
+  display: none;
+}
+
+.idol-meals-page .idol-foods-modal-grid .product-description {
+  display: -webkit-box;
+  min-height: 42px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.idol-meals-page .idol-foods-modal-grid .quantity-selector {
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 12px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  background: #fff7f3;
+}
+
+.idol-meals-page .idol-foods-modal-grid .quantity-selector label {
+  font-size: 0.86rem;
+}
+
+.idol-meals-page .idol-foods-modal-grid .quantity-controls {
+  padding: 4px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(29, 53, 87, 0.08);
+}
+
+.idol-meals-page .idol-foods-modal-grid .qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+}
+
+.idol-meals-page .idol-foods-modal-grid .product-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px !important;
+  margin-top: auto;
+}
+
+.idol-meals-page .idol-foods-modal-grid .product-actions .btn {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 9px 10px;
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+
+.idol-meals-page .idol-modal-empty {
+  margin: 26px;
+  padding: 44px 20px;
+  border: 1px solid var(--kfood-line, rgba(29, 53, 87, 0.12));
+  border-radius: 16px;
+  background: #fffaf8;
+  color: var(--kfood-muted, #687386);
+  font-weight: 800;
+  text-align: center;
+}
+
+@media (max-width: 980px) {
+  .idol-meals-page .idol-modal {
+    width: min(96vw, 632px);
+    max-width: 632px;
+  }
+
+  .idol-meals-page .idol-foods-modal-grid {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 720px) {
+  .idol-meals-page .idol-modal {
+    width: 100%;
+    height: calc(100vh - 24px);
+    max-height: calc(100vh - 24px);
+    border-radius: 14px;
+  }
+
+  .idol-meals-page .idol-modal-header {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 58px 16px 16px;
+  }
+
+  .idol-meals-page .idol-modal-header img {
+    width: 58px;
+    height: 58px;
+    border-radius: 12px;
+  }
+
+  .idol-meals-page .idol-modal .close-btn {
+    top: 16px;
+    right: 16px;
+  }
+
+  .idol-meals-page .idol-modal-body {
+    padding: 0;
+  }
+
+  .idol-meals-page .idol-foods-modal-grid {
+    gap: 14px;
+  }
+
+  .idol-meals-page .idol-foods-modal-grid .product-card {
+    width: 100%;
+  }
+
+  .idol-meals-page .idol-foods-modal-grid .product-actions {
+    grid-template-columns: 1fr;
+  }
+}
 

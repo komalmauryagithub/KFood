@@ -789,3 +789,633 @@ body {
 .kdrama-image{
       height: 142px;
 }
+
+.main-content.admin-route-content {
+  padding: 0;
+  margin-left: 0;
+}
+
+/* Scoped public page theme. */
+:root {
+  --kfood-surface: #ffffff;
+  --kfood-surface-soft: #fff7f3;
+  --kfood-page-bg: #fffaf7;
+  --kfood-ink: #1d3557;
+  --kfood-muted: #687386;
+  --kfood-red: #e63946;
+  --kfood-red-dark: #c1121f;
+  --kfood-gold: #f4a261;
+  --kfood-teal: #2a9d8f;
+  --kfood-line: rgba(29, 53, 87, 0.12);
+  --kfood-card-shadow: 0 16px 38px rgba(29, 53, 87, 0.12);
+  --kfood-card-shadow-hover: 0 22px 48px rgba(230, 57, 70, 0.18);
+}
+
+.kfood-themed-page:not(.auth-page),
+.wishlist-page {
+  min-height: calc(100vh - 80px);
+  padding-bottom: 56px;
+  background:
+    linear-gradient(180deg, var(--kfood-page-bg) 0%, #f7fbff 46%, #ffffff 100%);
+}
+
+.kfood-themed-page .container,
+.wishlist-page {
+  width: min(100%, 1180px);
+}
+
+.kfood-themed-page .hero,
+.kfood-themed-page .category-header {
+  position: relative;
+  overflow: hidden;
+  margin-top: -20px;
+  margin-bottom: 48px;
+  padding: clamp(52px, 8vw, 88px) 20px;
+  background:
+    linear-gradient(135deg, rgba(29, 53, 87, 0.96) 0%, rgba(69, 123, 157, 0.92) 48%, rgba(230, 57, 70, 0.9) 100%);
+  color: var(--white);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 18px 42px rgba(29, 53, 87, 0.18);
+}
+
+.kfood-themed-page .hero::after,
+.kfood-themed-page .category-header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 9px;
+  background: linear-gradient(90deg, var(--kfood-red), var(--kfood-gold), var(--kfood-teal));
+}
+
+.kfood-themed-page .hero .container,
+.kfood-themed-page .category-header .container {
+  position: relative;
+  z-index: 1;
+}
+
+.kfood-themed-page .hero-title,
+.kfood-themed-page .category-title {
+  margin-bottom: 14px;
+  color: var(--white);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.kfood-themed-page .hero-subtitle,
+.kfood-themed-page .category-description {
+  max-width: 680px;
+  margin: 0 auto 28px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(1rem, 2vw, 1.16rem);
+}
+
+.kfood-themed-page .section-title,
+.wishlist-page .page-title,
+.kfood-themed-page .page-title,
+.kfood-themed-page .auth-title {
+  color: var(--kfood-ink);
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.kfood-themed-page .section-title,
+.wishlist-page .page-title,
+.kfood-themed-page .page-title {
+  position: relative;
+  margin-bottom: 34px;
+  padding-bottom: 14px;
+}
+
+.kfood-themed-page .section-title::after,
+.wishlist-page .page-title::after,
+.kfood-themed-page .page-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 72px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--kfood-red), var(--kfood-gold));
+  transform: translateX(-50%);
+}
+
+.kfood-themed-page .products-grid,
+.wishlist-page .products-grid {
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: 26px;
+  align-items: stretch;
+}
+
+.home-page .products-grid,
+.popular-foods-page .products-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.kfood-themed-page .product-card,
+.wishlist-page .product-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--kfood-surface) 0%, #fffaf8 100%);
+  border: 1px solid var(--kfood-line);
+  border-radius: 16px;
+  box-shadow: var(--kfood-card-shadow);
+  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.kfood-themed-page .product-card:hover,
+.wishlist-page .product-card:hover {
+  border-color: rgba(230, 57, 70, 0.22);
+  box-shadow: var(--kfood-card-shadow-hover);
+  transform: translateY(-6px);
+}
+
+.kfood-themed-page .product-image,
+.wishlist-page .product-image {
+  height: 210px;
+  background: #f1f5f9;
+}
+
+.kfood-themed-page .product-info,
+.wishlist-page .product-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.kfood-themed-page .product-category,
+.wishlist-page .product-category {
+  width: fit-content;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(230, 57, 70, 0.1);
+  color: var(--kfood-red);
+  font-size: 0.76rem;
+  letter-spacing: 0;
+}
+
+.kfood-themed-page .product-name,
+.wishlist-page .product-info h3,
+.wishlist-page .product-name {
+  color: var(--kfood-ink);
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.kfood-themed-page .product-description,
+.wishlist-page .product-info p,
+.wishlist-page .product-description {
+  color: var(--kfood-muted);
+  line-height: 1.55;
+}
+
+.kfood-themed-page .product-price,
+.wishlist-page .product-price {
+  margin-top: auto;
+  color: var(--kfood-red);
+  font-size: 1.35rem;
+}
+
+.kfood-themed-page .product-actions,
+.wishlist-page .product-actions {
+  gap: 10px !important;
+  margin-top: 8px;
+}
+
+.kfood-themed-page .btn,
+.wishlist-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.kfood-themed-page .btn-primary,
+.wishlist-page .btn-primary {
+  background: linear-gradient(135deg, var(--kfood-red) 0%, #ff7043 100%);
+  color: var(--white);
+  box-shadow: 0 10px 22px rgba(230, 57, 70, 0.24);
+}
+
+.kfood-themed-page .btn-primary:hover,
+.wishlist-page .btn-primary:hover {
+  background: linear-gradient(135deg, var(--kfood-red-dark) 0%, #e85d35 100%);
+  transform: translateY(-1px);
+}
+
+.kfood-themed-page .btn-secondary,
+.wishlist-page .btn-secondary {
+  background: var(--kfood-ink);
+  color: var(--white);
+  box-shadow: 0 10px 22px rgba(29, 53, 87, 0.22);
+}
+
+.kfood-themed-page .btn-outline,
+.wishlist-page .btn-outline {
+  border: 1px solid rgba(230, 57, 70, 0.38);
+  background: #fff;
+  color: var(--kfood-red);
+}
+
+.kfood-themed-page .btn-outline:hover,
+.wishlist-page .btn-outline:hover {
+  background: rgba(230, 57, 70, 0.08);
+  color: var(--kfood-red-dark);
+}
+
+.featured-section {
+  padding-top: 12px;
+}
+
+.section-actions {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.category-section {
+  margin-top: 64px;
+  margin-bottom: 64px;
+}
+
+.home-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.category-card {
+  padding: 28px;
+  text-align: left;
+}
+
+.category-card-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(230, 57, 70, 0.12), rgba(244, 162, 97, 0.2));
+  color: var(--kfood-red);
+  font-weight: 800;
+}
+
+.category-card h3 {
+  margin-bottom: 10px;
+  color: var(--kfood-ink);
+  font-size: 1.2rem;
+}
+
+.category-card p {
+  color: var(--kfood-muted);
+}
+
+.wishlist-page {
+  max-width: 1100px;
+  padding: 36px 20px 64px;
+}
+
+.wishlist-page .wishlist-quantity-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 0 8px;
+  padding: 12px;
+  border: 1px solid rgba(29, 53, 87, 0.08);
+  border-radius: 12px;
+  background: #fff7f3;
+}
+
+.wishlist-page .wishlist-quantity-selector span {
+  color: var(--kfood-ink);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.wishlist-page .wishlist-qty-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(29, 53, 87, 0.08);
+}
+
+.wishlist-page .wishlist-qty-btn {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(230, 57, 70, 0.5);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--kfood-red);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.wishlist-page .wishlist-qty-btn:hover:not(:disabled) {
+  background: var(--kfood-red);
+  color: #ffffff;
+}
+
+.wishlist-page .wishlist-qty-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.wishlist-page .wishlist-qty-value {
+  min-width: 28px;
+  color: var(--kfood-ink);
+  font-size: 1rem;
+  text-align: center;
+}
+
+.wishlist-empty,
+.kfood-themed-page .wishlist-empty,
+.kfood-themed-page .orders-empty {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 28px;
+  background: var(--kfood-surface);
+  border: 1px solid var(--kfood-line);
+  border-radius: 16px;
+  box-shadow: var(--kfood-card-shadow);
+}
+
+.wishlist-empty h2,
+.kfood-themed-page .orders-empty h2 {
+  color: var(--kfood-ink);
+  margin-bottom: 10px;
+}
+
+.wishlist-empty p,
+.kfood-themed-page .orders-empty p {
+  color: var(--kfood-muted);
+  margin-bottom: 18px;
+}
+
+.kfood-themed-page.contact-page,
+.kfood-themed-page.orders-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 36px 20px 64px;
+}
+
+.kfood-themed-page.contact-page {
+  max-width: 760px;
+}
+
+.kfood-themed-page .contact-form,
+.kfood-themed-page.auth-page {
+  background: linear-gradient(180deg, var(--kfood-surface) 0%, #fffaf8 100%);
+  border: 1px solid var(--kfood-line);
+  border-radius: 16px;
+  box-shadow: var(--kfood-card-shadow);
+}
+
+.kfood-themed-page .contact-form {
+  padding: clamp(24px, 4vw, 36px);
+}
+
+.kfood-themed-page.auth-page {
+  max-width: 520px;
+  margin: 42px auto 64px;
+  padding: clamp(28px, 5vw, 42px);
+}
+
+.kfood-themed-page .form-group label {
+  color: var(--kfood-ink);
+  font-weight: 700;
+}
+
+.kfood-themed-page .form-group input,
+.kfood-themed-page .form-group textarea,
+.kfood-themed-page .form-select {
+  border: 1px solid var(--kfood-line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--kfood-ink);
+}
+
+.kfood-themed-page .form-group input:focus,
+.kfood-themed-page .form-group textarea:focus,
+.kfood-themed-page .form-select:focus {
+  border-color: rgba(230, 57, 70, 0.46);
+  box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
+}
+
+.kfood-themed-page .success-message,
+.wishlist-page .success-message {
+  border: 1px solid rgba(42, 157, 143, 0.22);
+  border-radius: 12px;
+  background: rgba(42, 157, 143, 0.1);
+  color: #1f7a70;
+}
+
+.kfood-themed-page .error-message,
+.wishlist-page .error-message {
+  border: 1px solid rgba(230, 57, 70, 0.18);
+  border-radius: 12px;
+  background: rgba(230, 57, 70, 0.1);
+  color: var(--kfood-red-dark);
+}
+
+.kfood-themed-page .orders-summary {
+  gap: 18px;
+}
+
+.kfood-themed-page .summary-card {
+  background: linear-gradient(135deg, var(--kfood-ink) 0%, #457b9d 55%, var(--kfood-teal) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: var(--kfood-card-shadow);
+}
+
+.kfood-themed-page .summary-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 1.9rem;
+}
+
+.kfood-themed-page .order-card {
+  border: 1px solid var(--kfood-line);
+  border-radius: 16px;
+  box-shadow: var(--kfood-card-shadow);
+}
+
+.kfood-themed-page .order-header,
+.kfood-themed-page .order-footer {
+  background: var(--kfood-surface-soft);
+}
+
+.kfood-themed-page .order-id,
+.kfood-themed-page .order-item-name,
+.kfood-themed-page .payment-method {
+  color: var(--kfood-ink);
+}
+
+.kfood-themed-page .order-item-total,
+.kfood-themed-page .total-amount {
+  color: var(--kfood-red);
+}
+
+.kfood-themed-page .delete-order-btn {
+  width: 40px;
+  min-height: 40px;
+  border-radius: 12px;
+  background: rgba(230, 57, 70, 0.11);
+  color: var(--kfood-red);
+}
+
+.kfood-themed-page .delete-order-btn:hover:not(:disabled) {
+  background: var(--kfood-red);
+  color: var(--white);
+}
+
+.kfood-themed-page .drama-foods-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 26px;
+}
+
+.kfood-themed-page .drama-food-card {
+  border: 1px solid var(--kfood-line);
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--kfood-surface) 0%, #fffaf8 100%);
+  box-shadow: var(--kfood-card-shadow);
+}
+
+.kfood-themed-page .drama-food-card:hover {
+  box-shadow: var(--kfood-card-shadow-hover);
+  transform: translateY(-6px);
+}
+
+.kfood-themed-page .kdrama-name {
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  background: rgba(29, 53, 87, 0.86);
+}
+
+.kfood-themed-page .video-section {
+  background: var(--kfood-surface-soft);
+}
+
+.kfood-themed-page .watch-scene-btn {
+  border-radius: 999px;
+  background: var(--kfood-ink);
+  box-shadow: 0 10px 22px rgba(29, 53, 87, 0.2);
+}
+
+.kfood-themed-page .watch-scene-btn:hover {
+  box-shadow: 0 12px 26px rgba(29, 53, 87, 0.26);
+}
+
+.kfood-themed-page .drama-food-name {
+  color: var(--kfood-ink);
+}
+
+.kfood-themed-page .drama-food-description {
+  color: var(--kfood-muted);
+}
+
+.kfood-themed-page .drama-food-price {
+  color: var(--kfood-red);
+}
+
+.kfood-themed-page .quantity-selector {
+  border: 1px solid rgba(29, 53, 87, 0.08);
+  background: #fff7f3;
+}
+
+.kfood-themed-page .quantity-controls {
+  background: #fff;
+}
+
+.kfood-themed-page .qty-btn {
+  border-color: rgba(230, 57, 70, 0.5);
+  color: var(--kfood-red);
+}
+
+.kfood-themed-page .qty-btn:hover:not(:disabled) {
+  background: var(--kfood-red);
+  color: var(--white);
+}
+
+.kfood-themed-page .order-btn {
+  background: linear-gradient(135deg, var(--kfood-red) 0%, #ff7043 100%);
+}
+
+.kfood-themed-page .wishlist-btn {
+  border-color: rgba(230, 57, 70, 0.42);
+  background: #fff;
+  color: var(--kfood-red);
+}
+
+.kfood-themed-page .wishlist-btn:hover {
+  background: rgba(230, 57, 70, 0.08);
+  color: var(--kfood-red-dark);
+}
+
+.kfood-themed-page .toast-message {
+  top: 92px;
+  border-radius: 999px;
+  background: var(--kfood-ink);
+  box-shadow: 0 12px 28px rgba(29, 53, 87, 0.24);
+}
+
+.kfood-themed-page .video-modal-content {
+  border: 1px solid var(--kfood-line);
+  border-radius: 16px;
+}
+
+.kfood-themed-page .video-modal-title {
+  color: var(--kfood-ink);
+}
+
+@media (max-width: 768px) {
+  .kfood-themed-page .hero,
+  .kfood-themed-page .category-header {
+    margin-bottom: 34px;
+    padding: 48px 16px;
+  }
+
+  .wishlist-page,
+  .kfood-themed-page.contact-page,
+  .kfood-themed-page.orders-page {
+    padding: 28px 15px 48px;
+  }
+
+  .kfood-themed-page .products-grid,
+  .wishlist-page .products-grid,
+  .home-category-grid,
+  .kfood-themed-page .drama-foods-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kfood-themed-page .product-actions,
+  .wishlist-page .product-actions,
+  .kfood-themed-page .drama-food-actions {
+    flex-direction: column;
+  }
+
+  .kfood-themed-page .product-actions .btn,
+  .wishlist-page .product-actions .btn {
+    width: 100%;
+  }
+}

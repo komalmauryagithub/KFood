@@ -16,6 +16,50 @@ const app = express();
 app.set('trust proxy', 1);
 
 // ✅ Security middleware
+const normalizeOrigin = (value) => (value || '').replace(/\/$/, '');
+
+// CORS must run before rate limiting/routes so browser preflight gets headers.
+const envOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((origin) => normalizeOrigin(origin.trim()))
+  .filter(Boolean);
+
+const allowedOrigins = new Set([
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5174',
+  ...envOrigins,
+]);
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    const normalizedOrigin = normalizeOrigin(origin);
+    const isLocalDev = /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(
+      normalizedOrigin
+    );
+
+    if (allowedOrigins.has(normalizedOrigin) || isLocalDev) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
 app.use(helmet());
 
 // ✅ Logger
@@ -32,27 +76,6 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
-
-// ✅ Allowed frontend origins
-const allowedOrigins = [
-  'http://localhost:5173',
-  process.env.FRONTEND_URL
-];
-
-// ✅ CORS setup
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (Postman/mobile apps)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true
-  })
-);
 
 // ✅ Body parser
 app.use(express.json({ limit: '10mb' }));

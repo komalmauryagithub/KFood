@@ -66,10 +66,6 @@ body {
   color: #1f2937;
 }
 
-.admin-sidebar{
-        margin-top: 50px;
-}
-
 /* Stats Grid */
 .stats-grid {
   display: grid;

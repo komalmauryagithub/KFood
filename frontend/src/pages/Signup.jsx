@@ -52,7 +52,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="auth-page">
+    <div className="kfood-themed-page auth-page signup-page">
       <h1 className="auth-title">Create Account</h1>
       
       {error && <div className="error-message">{error}</div>}

@@ -104,7 +104,7 @@ const Contact = () => {
     !formData.message.trim();
 
   return (
-    <div className="contact-page">
+    <div className="kfood-themed-page contact-page">
       <h1 className="page-title">Contact Us</h1>
       
       <div className="contact-form">
