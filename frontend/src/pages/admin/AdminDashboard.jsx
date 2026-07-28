@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { adminAPI } from '../../services/api';
 import '../../styles/admin/Dashboard.css';
 import '../../styles/admin/Table.css';
@@ -35,6 +36,13 @@ const AdminDashboard = () => {
     fetchDashboard();
   };
 
+  const dashboardCards = [
+    { title: 'Total Users', value: stats.totalUsers || 0, to: '/admin/users' },
+    { title: 'Total Orders', value: stats.totalOrders || 0, to: '/admin/orders' },
+    { title: 'Total Foods', value: stats.totalFoods || 0, to: '/admin/foods' },
+    { title: 'Total Revenue', value: `$${stats.totalRevenue?.toFixed(2) || 0}`, to: '/admin/orders' },
+  ];
+
   return (
     <div className="admin-themed-page admin-dashboard">
       <div className="page-header">
@@ -42,22 +50,17 @@ const AdminDashboard = () => {
         <button onClick={handleManualRefresh} className="btn btn-secondary">Refresh Now</button>
       </div>
       <div className="stats-grid">
-        <div className="stat-card">
-          <h3>Total Users</h3>
-          <p className="stat-number">{stats.totalUsers || 0}</p>
-        </div>
-        <div className="stat-card">
-          <h3>Total Orders</h3>
-          <p className="stat-number">{stats.totalOrders || 0}</p>
-        </div>
-        <div className="stat-card">
-          <h3>Total Foods</h3>
-          <p className="stat-number">{stats.totalFoods || 0}</p>
-        </div>
-        <div className="stat-card">
-          <h3>Total Revenue</h3>
-          <p className="stat-number">${stats.totalRevenue?.toFixed(2) || 0}</p>
-        </div>
+        {dashboardCards.map((card) => (
+          <Link
+            key={card.title}
+            to={card.to}
+            className="stat-card stat-card-link"
+            aria-label={`Open ${card.title}`}
+          >
+            <h3>{card.title}</h3>
+            <p className="stat-number">{card.value}</p>
+          </Link>
+        ))}
       </div>
 
       <div className="dashboard-section">
