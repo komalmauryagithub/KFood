@@ -209,8 +209,8 @@
 }
 
 .admin-sidebar .nav-link:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--admin-theme-red), #f97316);
+  color: #cbd5e1;
 }
 
 .admin-sidebar .nav-link.active {
