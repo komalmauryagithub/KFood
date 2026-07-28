@@ -1,27 +1,167 @@
+// const express = require('express');
+// const cors = require('cors');
+// const dotenv = require('dotenv');
+// const helmet = require('helmet');
+// const morgan = require('morgan');
+// const rateLimit = require('express-rate-limit');
+
+// const errorMiddleware = require('./middleware/errorMiddleware');
+
+// // ✅ Load environment variables
+// dotenv.config();
+
+// const app = express();
+
+// // ✅ Trust proxy (important for Render/Railway/Vercel)
+// app.set('trust proxy', 1);
+
+// // ✅ Security middleware
+// const normalizeOrigin = (value) => (value || '').replace(/\/$/, '');
+
+// // CORS must run before rate limiting/routes so browser preflight gets headers.
+// const envOrigins = (process.env.FRONTEND_URL || '')
+//   .split(',')
+//   .map((origin) => normalizeOrigin(origin.trim()))
+//   .filter(Boolean);
+
+// const allowedOrigins = new Set([
+//   'http://localhost:5173',
+//   'http://127.0.0.1:5173',
+//   'http://localhost:5174',
+//   'http://127.0.0.1:5174',
+//   ...envOrigins,
+// ]);
+
+// const corsOptions = {
+//   origin(origin, callback) {
+//     if (!origin) {
+//       callback(null, true);
+//       return;
+//     }
+
+//     const normalizedOrigin = normalizeOrigin(origin);
+//     const isLocalDev = /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(
+//       normalizedOrigin
+//     );
+
+//     if (allowedOrigins.has(normalizedOrigin) || isLocalDev) {
+//       callback(null, true);
+//       return;
+//     }
+
+//     callback(new Error(`Not allowed by CORS: ${origin}`));
+//   },
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   optionsSuccessStatus: 204,
+// };
+
+// app.use(cors(corsOptions));
+// app.options('*', cors(corsOptions));
+
+// app.use(helmet());
+
+// // ✅ Logger
+// app.use(morgan('dev'));
+
+// // ✅ Rate limiter
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 mins
+//   max: 100, // max requests per IP
+//   message: {
+//     success: false,
+//     message: 'Too many requests, please try again later.'
+//   }
+// });
+
+// app.use(limiter);
+
+// // ✅ Body parser
+// app.use(express.json({ limit: '10mb' }));
+// app.use(express.urlencoded({ extended: true }));
+
+// // ✅ Health check route
+// app.get('/api/health', (req, res) => {
+//   res.status(200).json({
+//     success: true,
+//     message: 'KFOOD API is running 🚀'
+//   });
+// });
+
+// // ✅ API Routes
+// app.use('/api/auth', require('./routes/authRoutes'));
+// app.use('/api/products', require('./routes/productRoutes'));
+// app.use('/api/orders', require('./routes/orderRoutes'));
+// app.use('/api/wishlist', require('./routes/wishlistRoutes'));
+// app.use('/api/contact', require('./routes/contactRoutes'));
+// app.use('/api/drama-foods', require('./routes/dramaRoutes'));
+// app.use('/api/idols', require('./routes/idolRoutes'));
+// app.use('/api/admin', require('./routes/adminRoutes'));
+
+// // ✅ 404 handler
+// app.use((req, res, next) => {
+//   const error = new Error(`Route not found - ${req.originalUrl}`);
+//   error.statusCode = 404;
+//   next(error);
+// });
+
+// // ✅ Global error handler
+// app.use(errorMiddleware);
+
+// module.exports = app;
+
+
+
+
+
+
+
+
+
+const dotenv = require('dotenv');
+
+// Environment variables sabse pehle load karo
+dotenv.config();
+
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
 const errorMiddleware = require('./middleware/errorMiddleware');
 
-// ✅ Load environment variables
-dotenv.config();
-
 const app = express();
 
-// ✅ Trust proxy (important for Render/Railway/Vercel)
-app.set('trust proxy', 1);
+/*
+|--------------------------------------------------------------------------
+| Railway / Proxy Configuration
+|--------------------------------------------------------------------------
+*/
 
-// ✅ Security middleware
-const normalizeOrigin = (value) => (value || '').replace(/\/$/, '');
+// Railway jaise reverse proxy ke peeche correct client IP ke liye
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
 
-// CORS must run before rate limiting/routes so browser preflight gets headers.
-const envOrigins = (process.env.FRONTEND_URL || '')
+/*
+|--------------------------------------------------------------------------
+| CORS Configuration
+|--------------------------------------------------------------------------
+*/
+
+const normalizeOrigin = (value = '') => {
+  return value.trim().replace(/\/+$/, '');
+};
+
+// FRONTEND_URL me ek ya multiple URLs comma-separated rakh sakte ho
+// Example:
+// FRONTEND_URL=http://localhost:5173,https://kfood.up.railway.app
+
+const environmentOrigins = (process.env.FRONTEND_URL || '')
   .split(',')
-  .map((origin) => normalizeOrigin(origin.trim()))
+  .map(normalizeOrigin)
   .filter(Boolean);
 
 const allowedOrigins = new Set([
@@ -29,67 +169,146 @@ const allowedOrigins = new Set([
   'http://127.0.0.1:5173',
   'http://localhost:5174',
   'http://127.0.0.1:5174',
-  ...envOrigins,
+  ...environmentOrigins,
 ]);
 
 const corsOptions = {
   origin(origin, callback) {
+    // Postman, mobile apps aur server-to-server request me origin nahi hota
     if (!origin) {
-      callback(null, true);
-      return;
+      return callback(null, true);
     }
 
     const normalizedOrigin = normalizeOrigin(origin);
-    const isLocalDev = /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(
-      normalizedOrigin
-    );
 
-    if (allowedOrigins.has(normalizedOrigin) || isLocalDev) {
-      callback(null, true);
-      return;
+    // Development me kisi localhost port ko allow karega
+    const isLocalDevelopment =
+      process.env.NODE_ENV !== 'production' &&
+      /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(normalizedOrigin);
+
+    if (
+      allowedOrigins.has(normalizedOrigin) ||
+      isLocalDevelopment
+    ) {
+      return callback(null, true);
     }
 
-    callback(new Error(`Not allowed by CORS: ${origin}`));
+    const error = new Error(`Not allowed by CORS: ${origin}`);
+    error.statusCode = 403;
+
+    return callback(error);
   },
+
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+
+  methods: [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+  ],
+
   optionsSuccessStatus: 204,
 };
 
+// CORS routes aur rate limiter se pehle hona chahiye
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 
-app.use(helmet());
+/*
+|--------------------------------------------------------------------------
+| Security Middleware
+|--------------------------------------------------------------------------
+*/
 
-// ✅ Logger
-app.use(morgan('dev'));
+app.use(
+  helmet({
+    crossOriginResourcePolicy: {
+      policy: 'cross-origin',
+    },
+  })
+);
 
-// ✅ Rate limiter
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 mins
-  max: 100, // max requests per IP
+/*
+|--------------------------------------------------------------------------
+| Request Logger
+|--------------------------------------------------------------------------
+*/
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+} else {
+  app.use(morgan('dev'));
+}
+
+/*
+|--------------------------------------------------------------------------
+| Body Parsers
+|--------------------------------------------------------------------------
+*/
+
+app.use(
+  express.json({
+    limit: '10mb',
+  })
+);
+
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: '10mb',
+  })
+);
+
+/*
+|--------------------------------------------------------------------------
+| Rate Limiter
+|--------------------------------------------------------------------------
+*/
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+
   message: {
     success: false,
-    message: 'Too many requests, please try again later.'
-  }
+    message: 'Too many requests. Please try again later.',
+  },
 });
 
-app.use(limiter);
+// Sirf API routes ko rate limit karega
+app.use('/api', apiLimiter);
 
-// ✅ Body parser
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+/*
+|--------------------------------------------------------------------------
+| Health Check
+|--------------------------------------------------------------------------
+*/
 
-// ✅ Health check route
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'KFOOD API is running 🚀'
+    message: 'KFOOD API is running 🚀',
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString(),
   });
 });
 
-// ✅ API Routes
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+*/
+
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
@@ -99,14 +318,27 @@ app.use('/api/drama-foods', require('./routes/dramaRoutes'));
 app.use('/api/idols', require('./routes/idolRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
-// ✅ 404 handler
+/*
+|--------------------------------------------------------------------------
+| 404 Handler
+|--------------------------------------------------------------------------
+*/
+
 app.use((req, res, next) => {
-  const error = new Error(`Route not found - ${req.originalUrl}`);
+  const error = new Error(
+    `Route not found - ${req.method} ${req.originalUrl}`
+  );
+
   error.statusCode = 404;
   next(error);
 });
 
-// ✅ Global error handler
+/*
+|--------------------------------------------------------------------------
+| Global Error Handler
+|--------------------------------------------------------------------------
+*/
+
 app.use(errorMiddleware);
 
 module.exports = app;
